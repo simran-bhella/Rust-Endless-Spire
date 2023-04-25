@@ -1,5 +1,41 @@
 # 23Spring-410P-Endless Spire
 
+## Team members
+
+    Bruce Truong, brucet@pdx.edu
+    
+    Chentao Ma, chentao@pdx.edu
+    
+    John Asencio-Giron, jaa23@pdx.edu
+    
+    Shihao Li, lishih@pdx.edu
+    
+    Simranjit Bhella, sbhella@pdx.edu
+
+## Brief Introduction
+
+"Endless Spire", our game will involve navigating a maze, killing monsters, and climbing towers while being patrolled by monsters. The player will input commands to move around the maze, attack monsters, and use items. There will be various items available for the player to collect, each with different effects on gameplay, such as increasing or decreasing the player's health, or granting special abilities.
+
+## Current delieverables
+1.A complete Roguelike game developed using Rust programming language.
+	MVP:
+	a) Player Movement
+    b) Enemies (Randomized Movement
+	c) 5-level map
+	d) Win Condition (Reaching the top)
+	e) Lose Condition (Health <=0 || Time expires [steps || real time]
+	f) Stairs Movement
+
+	Stretch Goals:
+    * Items (ie: bombs)
+    * 10 maps/levels
+    * Maps are generated procedurally
+    * Keys and door
+    * Enemies use pathing algorithm (https://arongranberg.com/astar/ , https://en.wikipedia.org/wiki/A*_search_algorithm)
+    * Multiplayer
+    * Game save
+    * Localization
+
 
 
 ## Getting started
