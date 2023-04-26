@@ -1,0 +1,10 @@
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\owned_ttf_parser-295c738b395dcce5.rmeta: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\convert.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\owned.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\preparse.rs
+
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\libowned_ttf_parser-295c738b395dcce5.rlib: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\convert.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\owned.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\preparse.rs
+
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\owned_ttf_parser-295c738b395dcce5.d: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\convert.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\owned.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\preparse.rs
+
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\lib.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\convert.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\owned.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\owned_ttf_parser-0.19.0\src\preparse.rs:

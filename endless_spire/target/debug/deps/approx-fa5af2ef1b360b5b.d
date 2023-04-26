@@ -1,0 +1,11 @@
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\approx-fa5af2ef1b360b5b.rmeta: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs
+
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\libapprox-fa5af2ef1b360b5b.rlib: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs
+
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\approx-fa5af2ef1b360b5b.d: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs
+
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs:

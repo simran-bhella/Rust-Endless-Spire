@@ -1,0 +1,11 @@
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\bzip2-becede63db5b6dc6.rmeta: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\mem.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\bufread.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\read.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\write.rs
+
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\libbzip2-becede63db5b6dc6.rlib: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\mem.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\bufread.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\read.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\write.rs
+
+C:\Users\54920\Desktop\PSU\2023 Spring\CS 410 Rust\project\23spring-410p-endless-spire\endless_spire\target\debug\deps\bzip2-becede63db5b6dc6.d: C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\lib.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\mem.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\bufread.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\read.rs C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\write.rs
+
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\lib.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\mem.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\bufread.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\read.rs:
+C:\Users\54920\.cargo\registry\src\github.com-1ecc6299db9ec823\bzip2-0.4.4\src\write.rs:
