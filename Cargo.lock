@@ -706,6 +706,14 @@ name = "endless_spire"
 version = "0.1.0"
 dependencies = [
  "ggez",
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+ "oorandom",
+ "rand",
+>>>>>>> c11b947 (may5th)
+=======
+>>>>>>> 9ed8f69 (oopsies)
 ]
 
 [[package]]
