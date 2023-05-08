@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // A static map example 
 //Shihao and Chentao
 use ggez::{
@@ -15,7 +14,6 @@ struct WindowSettings {
     toggle_fullscreen: bool,
     is_fullscreen: bool,
     //resize_projection: bool,
->>>>>>> b353ebd (Tried to add background)
 }
 
 //sim/ added background
@@ -23,8 +21,10 @@ struct MainState {
     window_settings: WindowSettings,
     frames: f64,
     angle: f32,
-    bg: graphics::Image,
+    image1: graphics::Image,
+    
 }
+
 
 
 impl MainState {
@@ -155,8 +155,20 @@ impl MainState {
 
     //sim/ added ctx as a param, and background
     fn new(ctx: &mut Context) -> GameResult<MainState> {
+<<<<<<< HEAD
         let bg = graphics::Image::from_path(ctx, r"\bg2.png")?;
         let s = MainState { frames: 0.0, angle: 0.0, bg,
+<<<<<<< HEAD
+=======
+>>>>>>> b353ebd (Tried to add background)
+=======
+        let image1 = graphics::Image::from_path(ctx, "/bg2.png")?;
+        let s = MainState { 
+            frames: 0.0, 
+            angle: 0.0, 
+            image1: image1,
+>>>>>>> bad4978 (v2)
+>>>>>>> f948b35 (v2)
             window_settings: WindowSettings {
             toggle_fullscreen: true,
             is_fullscreen: true,
@@ -181,8 +193,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
             } else {
                 conf::FullscreenType::Windowed
             };
-            // ctx.gfx.set_fullscreen(fullscreen_type)?;
-            // self.window_settings.toggle_fullscreen = true;
+             ctx.gfx.set_fullscreen(fullscreen_type)?;
+             self.window_settings.toggle_fullscreen = true;
         }
     }
         Ok(())
@@ -192,7 +204,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
         //let window = WindowMode;
         
         let mut canvas =
-<<<<<<< HEAD
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
    
         // Text is drawn from the top-left corner.
@@ -221,30 +232,30 @@ impl event::EventHandler<ggez::GameError> for MainState {
         // }
         let mut canvas =
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.9, 0.9, 0.3, 1.0]));
-=======
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.5]));
->>>>>>> 8c13f71 (Tried to add background)
+            graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
    
         // Text is drawn from the top-left corner.
-        let offset = self.frames as f32;
-        let dest_point = ggez::glam::Vec2::new(offset, offset);
+//        let offset = self.frames as f32;
+ //       let dest_point = ggez::glam::Vec2::new(offset, offset);
 
         //sim/ added param dst and added another canvas draw to add background
-        //let dst = ggez::glam::Vec2::new(0.4,0.0);
+        let dst = ggez::glam::Vec2::new(20.0,20.0);
         
         canvas.draw(
             graphics::Text::new("Endless Spire")
             // graphics::Text::new("press any button to start game")
                 .set_scale(69.),
-            dest_point,
+                dst,
         );
-        canvas.draw(&self.bg, graphics::DrawParam::new().dest(dest_point));
+        
+        canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst));
         canvas.finish(ctx)?;
-        ctx.gfx.present(&self.bg.image(ctx))?;
+        //ctx.gfx.present(&self.bg.Image(ctx))?;
         
         
 
-        self.frames = 0.5;
+        self.frames = 200.;
         // if (self.frames % 100.0) == 0.0 {
         //     println!("FPS: {}", ctx.time.fps());
         // }
@@ -280,6 +291,7 @@ pub fn main() -> GameResult {
 
     let state = MainState::new(&ctx)?;
     let state = MainState::new(&mut ctx)?;
+    let state = MainState::new(&mut ctx).unwrap();
     event::run(ctx, event_loop, state)
 }
 
