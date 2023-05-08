@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // A static map example 
 //Shihao and Chentao
 use ggez::{
@@ -8,15 +9,21 @@ use ggez::{
 };
 use std::{env, path};
 
-struct MainState {
-    image1: graphics::Image,
-    image2: graphics::Image,
+use std::{env, path};
+
+struct WindowSettings {
+    toggle_fullscreen: bool,
+    is_fullscreen: bool,
+    //resize_projection: bool,
+>>>>>>> b353ebd (Tried to add background)
 }
 
+//sim/ added background
 struct MainState {
     window_settings: WindowSettings,
     frames: f64,
-    angle: f32
+    angle: f32,
+    bg: graphics::Image,
 }
 
 
@@ -145,11 +152,18 @@ impl event::EventHandler<ggez::GameError> for MainState {
 impl MainState {
     fn new() -> GameResult<MainState> {
         let s = MainState { frames: 0.0, angle: 0.0,
+
+    //sim/ added ctx as a param, and background
+    fn new(ctx: &mut Context) -> GameResult<MainState> {
+        let bg = graphics::Image::from_path(ctx, r"\bg2.png")?;
+        let s = MainState { frames: 0.0, angle: 0.0, bg,
             window_settings: WindowSettings {
             toggle_fullscreen: true,
             is_fullscreen: true,
-            resize_projection: false,
-        } };
+            //resize_projection: false,
+            },
+    
+    };
         Ok(s)
     }
 }
@@ -167,8 +181,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
             } else {
                 conf::FullscreenType::Windowed
             };
-            ctx.gfx.set_fullscreen(fullscreen_type)?;
-            self.window_settings.toggle_fullscreen = true;
+            // ctx.gfx.set_fullscreen(fullscreen_type)?;
+            // self.window_settings.toggle_fullscreen = true;
         }
     }
         Ok(())
@@ -178,6 +192,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
         //let window = WindowMode;
         
         let mut canvas =
+<<<<<<< HEAD
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
    
         // Text is drawn from the top-left corner.
@@ -206,23 +221,33 @@ impl event::EventHandler<ggez::GameError> for MainState {
         // }
         let mut canvas =
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.9, 0.9, 0.3, 1.0]));
+=======
+            graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.5]));
+>>>>>>> 8c13f71 (Tried to add background)
    
         // Text is drawn from the top-left corner.
         let offset = self.frames as f32;
         let dest_point = ggez::glam::Vec2::new(offset, offset);
+
+        //sim/ added param dst and added another canvas draw to add background
+        //let dst = ggez::glam::Vec2::new(0.4,0.0);
+        
         canvas.draw(
             graphics::Text::new("Endless Spire")
             // graphics::Text::new("press any button to start game")
                 .set_scale(69.),
             dest_point,
         );
-
+        canvas.draw(&self.bg, graphics::DrawParam::new().dest(dest_point));
         canvas.finish(ctx)?;
+        ctx.gfx.present(&self.bg.image(ctx))?;
+        
+        
 
-        self.frames += 0.1;
-        if (self.frames % 100.0) == 0.0 {
-            println!("FPS: {}", ctx.time.fps());
-        }
+        self.frames = 0.5;
+        // if (self.frames % 100.0) == 0.0 {
+        //     println!("FPS: {}", ctx.time.fps());
+        // }
 
         Ok(())
     }
@@ -238,7 +263,6 @@ pub fn main() -> GameResult {
     } else {
         path::PathBuf::from("./resources")
     };
-    
     let cb = ggez::ContextBuilder::new("Endless Spire", "me").add_resource_path(resource_dir);
 
     //sim/ changed ctx to be mutable, passed into Mainstate::new argument
@@ -255,5 +279,8 @@ pub fn main() -> GameResult {
     ctx.gfx.set_window_title("Endless Spire");
 
     let state = MainState::new(&ctx)?;
+    let state = MainState::new(&mut ctx)?;
     event::run(ctx, event_loop, state)
 }
+
+//sim/ if you leave the start screen running, the "endless spire" text eventually disapears 
