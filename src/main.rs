@@ -1,18 +1,18 @@
 use ggez::{event, graphics, Context, GameResult};
-use ggez::conf;
+//use ggez::conf;
 use std::{env, path};
 
-struct WindowSettings {
-    toggle_fullscreen: bool,
-    is_fullscreen: bool,
+//struct WindowSettings {
+//    toggle_fullscreen: bool,
+//    is_fullscreen: bool,
     //resize_projection: bool,
-}
+//}
 
 //sim/ added background
 struct MainState {
-    window_settings: WindowSettings,
+//    window_settings: WindowSettings,
     frames: f64,
-    angle: f32,
+//    angle: f32,
     image1: graphics::Image,
     
 }
@@ -23,16 +23,16 @@ impl MainState {
 
     //sim/ added ctx as a param, and background
     fn new(ctx: &mut Context) -> GameResult<MainState> {
-        let image1 = graphics::Image::from_path(ctx, "/bg2.png")?;
+        let image1 = graphics::Image::from_path(ctx, "/background.png")?;
         let s = MainState { 
             frames: 0.0, 
-            angle: 0.0, 
+     //       angle: 0.0, 
             image1: image1,
-            window_settings: WindowSettings {
-            toggle_fullscreen: true,
-            is_fullscreen: true,
+      //      window_settings: WindowSettings {
+      //      toggle_fullscreen: true,
+     //       is_fullscreen: true,
             //resize_projection: false,
-            },
+     //       },
     
     };
         Ok(s)
@@ -41,13 +41,13 @@ impl MainState {
 
 impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, ctx: &mut Context) -> GameResult {
-        const DESIRED_FPS: u32 = 60;
+        /*const DESIRED_FPS: u32 = 60;
         while ctx.time.check_update_time(DESIRED_FPS) {
             self.angle += 0.01;
 
         if self.window_settings.toggle_fullscreen {
             let fullscreen_type = if self.window_settings.is_fullscreen {
-                conf::FullscreenType::Desktop
+                conf::FullscreenType::Windowed
             } else {
                 conf::FullscreenType::Windowed
             };
@@ -55,30 +55,31 @@ impl event::EventHandler<ggez::GameError> for MainState {
              self.window_settings.toggle_fullscreen = true;
         }
     }
+    */
         Ok(())
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
-        //let window = WindowMode;
         
         let mut canvas =
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
-   
-        // Text is drawn from the top-left corner.
-//        let offset = self.frames as f32;
- //       let dest_point = ggez::glam::Vec2::new(offset, offset);
 
-        //sim/ added param dst and added another canvas draw to add background
-        let dst = ggez::glam::Vec2::new(20.0,20.0);
+        let dst = ggez::glam::Vec2::new(0.0,-120.0);
         
-        canvas.draw(
-            graphics::Text::new("Endless Spire")
-            // graphics::Text::new("press any button to start game")
-                .set_scale(69.),
-                dst,
-        );
+        let tit = ggez::glam::Vec2::new(170.0,225.0);
+        let text = ggez::glam::Vec2::new(220.0,375.0);
         
         canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst));
+        canvas.draw(
+            graphics::Text::new("Endless Spire")
+                .set_scale(75.),
+                graphics::DrawParam::default().dest(tit),
+        );
+        canvas.draw(
+            graphics::Text::new("Press Any Key to Continue")
+                .set_scale(35.),
+                graphics::DrawParam::default().dest(text),
+        );
         canvas.finish(ctx)?;
         //ctx.gfx.present(&self.bg.Image(ctx))?;
         
