@@ -1,17 +1,22 @@
-use ggez::conf;
 use ggez::input::keyboard::KeyCode;
+//use ggez::conf::WindowMode;
+use ggez::conf;
 use ggez::{event, graphics, Context, GameResult};
 use std::{env, path}; //,// KeyMods, KeyInput};
 
-//struct WindowSettings {
-//    toggle_fullscreen: bool,
+struct WindowSettings {
+//    pub width: f32,
+//    pub height: f32,
+    pub fullscreen_type: conf::FullscreenType,
+    toggle_fullscreen: bool,
 //    is_fullscreen: bool,
-//resize_projection: bool,
-//}
+//    resize_projection: bool,
+}
+
 
 //sim/ added background
 struct MainState {
-    //    window_settings: WindowSettings,
+        window_settings: WindowSettings,
     frames: f64,
     //    angle: f32,
     background_img: graphics::Image,
@@ -34,11 +39,14 @@ impl MainState {
             image1: image1,
             image2: image2,
             start_screen: true,
-            //      window_settings: WindowSettings {
-            //      toggle_fullscreen: true,
-            //       is_fullscreen: true,
-            //resize_projection: false,
-            //       },
+                  window_settings: WindowSettings {
+    //                width: 2400.0,
+    //               height: 1800.0,
+                    fullscreen_type: conf::FullscreenType::Windowed,
+                    toggle_fullscreen: false,
+    //                is_fullscreen: true,
+    //                resize_projection: true,
+                   },
         };
         Ok(s)
     }
@@ -52,21 +60,16 @@ impl event::EventHandler<ggez::GameError> for MainState {
             if start_press.is_key_pressed(KeyCode::Space) {
                 //start the next event so i think run function that would run game
                 self.start_screen = false;
+                self.window_settings.toggle_fullscreen = true;
+                ctx.gfx.set_fullscreen(self.window_settings.fullscreen_type)?;
+                self.window_settings.toggle_fullscreen = true;
             }
         }
-        /*    self.angle += 0.01;
-
-            if self.window_settings.toggle_fullscreen {
-                let fullscreen_type = if self.window_settings.is_fullscreen {
-                    conf::FullscreenType::Windowed
-                } else {
-                    conf::FullscreenType::Windowed
-                };
-                 ctx.gfx.set_fullscreen(fullscreen_type)?;
-                 self.window_settings.toggle_fullscreen = true;
-            }
-        }
-        */
+        /*    self.angle += 0.01; */
+                
+            
+    
+        
         Ok(())
     }
 
@@ -147,7 +150,9 @@ pub fn main() -> GameResult {
         path::PathBuf::from("./resources")
     };
 
-    let cb = ggez::ContextBuilder::new("Endless Spire", "me").add_resource_path(resource_dir);
+    let cb = ggez::ContextBuilder::new("Endless Spire", "me")
+        .add_resource_path(resource_dir)
+        .window_mode(conf::WindowMode::default().dimensions(1400.0, 900.0));
 
     //sim/ changed ctx to be mutable, passed into Mainstate::new argument
     let (mut ctx, event_loop) = cb.build()?;
