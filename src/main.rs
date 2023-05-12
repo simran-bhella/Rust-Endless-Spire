@@ -121,8 +121,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                                                ];
     
             // Draw an image.
-             for x in 1..79 {
-                  for y in 10..40 {
+             for x in 1..139 {
+                  for y in 10..75 {
                      let dst = ggez::glam::Vec2::new(x as f32 *10.0, y as f32 *10.0);
                       if tuples.contains(&(x, y)) {
                         canvas.draw(&self.image1, graphics::DrawParam::new().dest(ggez::glam::Vec2::new(x as f32 *10.0-10.0, y as f32 *10.0-10.0)).scale(scale2));     
