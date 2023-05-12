@@ -9,6 +9,79 @@ use std::{env, path}; //,// KeyMods, KeyInput};
 //resize_projection: bool,
 //}
 
+#[derive(Debug)]
+enum ActorType {
+    Player,
+}
+#[derive(Debug)]
+struct Actor {
+    tag: ActorType,
+    pos: Point2,
+    facing: f32,
+    velocity: Vector2,
+    ang_vel: f32,
+    bbox_size: f32,
+    life: f32,
+}
+
+fn create_player() -> Actor {
+    Actor {
+        tag: ActorType::Player,
+        pos: Point2::ZERO,
+        facing: 0.,
+        velocity: Vector2::ZERO,
+        ang_vel: 0.,
+        bbox_size: PLAYER_BBOX,
+        life: 1.0,
+    }
+}
+
+
+fn player_handle_input(actor: &mut Actor, input: &InputState, dt: f32) {
+    actor.facing += dt * 3.0 * input.xaxis;
+
+    if input.yaxis > 0.0 {
+        player_thrust(actor, dt);
+    }
+}
+
+fn vec_from_angle(angle: f32) -> Vector2 {
+    let vx = angle.sin();
+    let vy = angle.cos();
+    Vector2::new(vx, vy)
+}
+
+fn player_thrust(actor: &mut Actor, dt: f32) {
+    let direction_vector = vec_from_angle(actor.facing);
+    let thrust_vector = direction_vector * (100.0);
+    actor.velocity += thrust_vector * (dt);
+}
+
+fn update_actor_position(actor: &mut Actor, dt: f32) {
+    let norm_sq = actor.velocity.length_squared();
+    if norm_sq > 250.0.powi(2) {
+        actor.velocity = actor.velocity / norm_sq.sqrt() * 250.0;
+    }
+    let dv = actor.velocity * dt;
+    actor.pos += dv;
+    actor.facing += actor.ang_vel;
+}
+
+#[derive(Debug)]
+struct InputState {
+    xaxis: f32,
+    yaxis: f32,
+}
+
+impl Default for InputState {
+    fn default() -> Self {
+        InputState {
+            xaxis: 0.0,
+            yaxis: 0.0,
+        }
+    }
+}
+
 //sim/ added background
 struct MainState {
     //    window_settings: WindowSettings,
@@ -17,8 +90,12 @@ struct MainState {
     background_img: graphics::Image,
     image1: graphics::Image,
     image2: graphics::Image,
+    player_image: graphics::Image,
     start_screen: bool,
+    input: InputState,
 }
+
+
 
 impl MainState {
     //sim/ added ctx as a param, and background
@@ -26,6 +103,8 @@ impl MainState {
         let background_img = graphics::Image::from_path(ctx, "/background.png")?;
         let image1 = graphics::Image::from_path(ctx, "/shot.png")?;
         let image2 = graphics::Image::from_path(ctx, "/tile.png")?;
+        let player_image = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
+        let player = create_player;
 
         let s = MainState {
             frames: 0.0,
@@ -34,6 +113,7 @@ impl MainState {
             image1: image1,
             image2: image2,
             start_screen: true,
+            player,
             //      window_settings: WindowSettings {
             //      toggle_fullscreen: true,
             //       is_fullscreen: true,
@@ -41,6 +121,22 @@ impl MainState {
             //       },
         };
         Ok(s)
+    }
+
+    fn draw_actor(
+        assets: &mut Assets,
+        canvas: &mut graphics::Canvas,
+        actor: &Actor,
+        world_coords: (f32, f32),
+    ) {
+        let (screen_w, screen_h) = world_coords;
+        let pos = world_to_screen_coords(screen_w, screen_h, actor.pos);
+        let image = assets.actor_image(actor);
+        let drawparams = graphics::DrawParam::new()
+            .dest(pos)
+            .rotation(actor.facing as f32)
+            .offset(Point2::new(0.5, 0.5));
+        canvas.draw(image, drawparams);
     }
 }
 
@@ -52,6 +148,18 @@ impl event::EventHandler<ggez::GameError> for MainState {
             if start_press.is_key_pressed(KeyCode::Space) {
                 //start the next event so i think run function that would run game
                 self.start_screen = false;
+            }
+            player_handle_input(&mut self.player, &self.input, seconds);
+
+            update_actor_position(&mut self.player, seconds);
+            wrap_actor_position(
+                &mut self.player,
+                self.screen_width as f32,
+                self.screen_height as f32,
+            );
+
+            if self.player.life <= 0.0 {
+                ctx.request_quit();
             }
         }
         /*    self.angle += 0.01;
@@ -69,6 +177,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
         */
         Ok(())
     }
+
+    
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         if self.start_screen {
@@ -128,7 +238,57 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     }
         } 
     }
-    canvas.finish(ctx)?;
+    let p = &self.player;
+            draw_actor(assets, &mut canvas, p, coords);
+
+    fn key_down_event(
+        &mut self,
+        ctx: &mut Context,
+        input: KeyInput,
+        _repeated: bool,
+    ) -> GameResult {
+        match input.keycode {
+            Some(KeyCode::Up) => {
+                self.input.yaxis = 1.0;
+            }
+            Some(KeyCode::Left) => {
+                self.input.xaxis = -1.0;
+            }
+            Some(KeyCode::Right) => {
+                self.input.xaxis = 1.0;
+            }
+            Some(KeyCode::Space) => {
+                self.input.fire = true;
+            }
+            Some(KeyCode::P) => {
+                self.screen.image(ctx).encode(
+                    ctx,
+                    graphics::ImageEncodingFormat::Png,
+                    "/screenshot.png",
+                )?;
+            }
+            Some(KeyCode::Escape) => ctx.request_quit(),
+            _ => (), // Do nothing
+        }
+        Ok(())
+    }
+    
+    
+    fn key_up_event(&mut self, _ctx: &mut Context, input: KeyInput) -> GameResult {
+        match input.keycode {
+            Some(KeyCode::Up) => {
+                self.input.yaxis = 0.0;
+            }
+            Some(KeyCode::Left | KeyCode::Right) => {
+                self.input.xaxis = 0.0;
+            }
+            Some(KeyCode::Space) => {
+                self.input.fire = false;
+            }
+            _ => (), // Do nothing
+        }
+        Ok(())
+    }
     
         }
         
@@ -137,6 +297,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
         Ok(())
     }
 }
+
+
 
 pub fn main() -> GameResult {
     let resource_dir = if let Ok(manifest_dir) = env::var("CARGO_MANIFEST_DIR") {
@@ -157,4 +319,3 @@ pub fn main() -> GameResult {
     event::run(ctx, event_loop, state)
 }
 
-//sim/ if you leave the start screen running, the "endless spire" text eventually disapears
