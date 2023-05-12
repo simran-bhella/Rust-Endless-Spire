@@ -22,6 +22,7 @@ struct MainState {
     background_img: graphics::Image,
     image1: graphics::Image,
     image2: graphics::Image,
+    image3: graphics::Image,
     start_screen: bool,
 }
 
@@ -31,6 +32,7 @@ impl MainState {
         let background_img = graphics::Image::from_path(ctx, "/background.png")?;
         let image1 = graphics::Image::from_path(ctx, "/shot.png")?;
         let image2 = graphics::Image::from_path(ctx, "/tile.png")?;
+        let image3 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
 
         let s = MainState {
             frames: 0.0,
@@ -38,6 +40,7 @@ impl MainState {
             background_img: background_img,
             image1: image1,
             image2: image2,
+            image3: image3,
             start_screen: true,
                   window_settings: WindowSettings {
     //                width: 2400.0,
@@ -81,6 +84,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
             let tit = ggez::glam::Vec2::new(170.0, 225.0);
             let text = ggez::glam::Vec2::new(220.0, 375.0);
+            let display = ggez::glam::Vec2::new(800.0, 600.0);
 
             canvas.draw(&self.background_img, graphics::DrawParam::new().dest(dst));
             canvas.draw(
@@ -91,6 +95,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::Text::new("Press Any Key to Continue").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
+
+            canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
             
             //ctx.gfx.present(&self.bg.Image(ctx))?;
 
