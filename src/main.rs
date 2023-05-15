@@ -85,8 +85,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
             let dst = ggez::glam::Vec2::new(0.0, -120.0);
 
-            let tit = ggez::glam::Vec2::new(170.0, 225.0);
-            let text = ggez::glam::Vec2::new(220.0, 375.0);
+            let tit = ggez::glam::Vec2::new(550.0, 225.0);
+            let text = ggez::glam::Vec2::new(600.0, 375.0);
             let display = ggez::glam::Vec2::new(800.0, 600.0);
 
             canvas.draw(&self.background_img, graphics::DrawParam::new().dest(dst));
@@ -95,7 +95,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::DrawParam::default().dest(tit),
             );
             canvas.draw(
-                graphics::Text::new("Press Any Key to Continue").set_scale(35.),
+                graphics::Text::new("Press Space to Continue").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
 
