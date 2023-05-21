@@ -4,13 +4,20 @@ use ggez::conf;
 use ggez::{event, graphics, Context, GameResult};
 use std::{env, path}; //,// KeyMods, KeyInput};
 
+const MAX_HEALTH: f32 = 100.0;
+
 struct WindowSettings {
-//    pub width: f32,
-//    pub height: f32,
     pub fullscreen_type: conf::FullscreenType,
     toggle_fullscreen: bool,
-//    is_fullscreen: bool,
-//    resize_projection: bool,
+}
+
+
+
+struct Player {
+    health: f32,
+    player_img: graphics::Image,
+    //i think i could add in the weapon they are holding here
+    //just have another struct defining weapon types and such
 }
 
 
@@ -18,12 +25,12 @@ struct WindowSettings {
 struct MainState {
         window_settings: WindowSettings,
     frames: f64,
-    //    angle: f32,
     background_img: graphics::Image,
     image1: graphics::Image,
     image2: graphics::Image,
     image3: graphics::Image,
     start_screen: bool,
+    player: Player,
 }
 
 impl MainState {
@@ -33,23 +40,23 @@ impl MainState {
         let image1 = graphics::Image::from_path(ctx, "/shot.png")?;
         let image2 = graphics::Image::from_path(ctx, "/tile.png")?;
         let image3 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
+        let image4 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
 
         let s = MainState {
             frames: 0.0,
-            //       angle: 0.0,
             background_img: background_img,
             image1: image1,
             image2: image2,
             image3: image3,
             start_screen: true,
-                  window_settings: WindowSettings {
-    //                width: 2400.0,
-    //               height: 1800.0,
-                    fullscreen_type: conf::FullscreenType::Windowed,
-                    toggle_fullscreen: false,
-    //                is_fullscreen: true,
-    //                resize_projection: true,
-                   },
+            window_settings: WindowSettings {
+                fullscreen_type: conf::FullscreenType::Windowed,
+                toggle_fullscreen: false,
+            },
+            player: Player {
+                health: MAX_HEALTH,
+                player_img: image4,
+            }
         };
         Ok(s)
     }
@@ -68,11 +75,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 self.window_settings.toggle_fullscreen = true;
             }
         }
-        /*    self.angle += 0.01; */
-                
-            
-    
-        
+                    
         Ok(())
     }
 
@@ -98,18 +101,22 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
             canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
             
-            //ctx.gfx.present(&self.bg.Image(ctx))?;
-
             self.frames = 200.;
-            // if (self.frames % 100.0) == 0.0 {
-            //     println!("FPS: {}", ctx.time.fps());
-            // }
             canvas.finish(ctx)?;
             
         }
         else {
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
+            //trying to display player health
+            let health_bar = ggez::glam::Vec2::new(50.0, 850.0); 
+            canvas.draw(
+                graphics::Text::new("Health: ").set_scale(35.),
+                graphics::DrawParam::default().dest(health_bar),
+            );
+
+            let spawn = ggez::glam::Vec2::new(100.0, 200.0);
+            canvas.draw(&self.player.player_img, graphics::DrawParam::new().dest(spawn));
 
             let scale1=ggez::glam::Vec2::new (0.05,0.05);
             let scale2=ggez::glam::Vec2::new (2.0,2.0);
@@ -135,16 +142,13 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     } else { 
                         canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
                     }
-        } 
-    }
-    canvas.finish(ctx)?;
+                } 
+                }
+                canvas.finish(ctx)?;
     
+            }
+            Ok(())
         }
-        
-        
-
-        Ok(())
-    }
 }
 
 pub fn main() -> GameResult {
