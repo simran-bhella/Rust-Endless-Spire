@@ -1,4 +1,4 @@
-use ggez::input::keyboard::KeyCode;
+use ggez::input::keyboard::{KeyCode, KeyInput};
 //use ggez::conf::WindowMode;
 use ggez::conf;
 use ggez::{event, graphics, Context, GameResult};
@@ -11,13 +11,117 @@ struct WindowSettings {
     toggle_fullscreen: bool,
 }
 
+impl From<GridPosition> for graphics::Rect {
+    fn from(pos: GridPosition) -> Self {
+        graphics::Rect::new_i32(
+            pos.x as i32 * 20 as i32,
+            pos.y as i32 * 20 as i32,
+            20 as i32,
+            20 as i32,
+        )
+    }
+}
+
+impl GridPosition {
+    pub fn new(x: i16, y: i16) -> Self {
+        GridPosition {x, y}
+    }
+
+    pub fn new_from_move(pos: GridPosition, dir: Direction) -> Self {
+        match dir {
+            Direction::Up => GridPosition::new(pos.x, (pos.y - 1).rem_euclid(20)),
+            Direction::Down => GridPosition::new(pos.x, (pos.y + 1).rem_euclid(20)),
+            Direction::Left => GridPosition::new((pos.x - 1).rem_euclid(20), pos.y),
+            Direction::Right => GridPosition::new((pos.x + 1).rem_euclid(20), pos.y),
+        }
+    }
+}
+
+impl From<(i16, i16)> for GridPosition {
+    fn from(pos: (i16, i16)) -> Self {
+        GridPosition { x: pos.0, y: pos.1 }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+impl Direction {
+
+    pub fn inverse(&self) -> Self {
+        match *self {
+            Direction::Up => Direction::Down,
+            Direction::Down => Direction::Up,
+            Direction::Left => Direction::Right,
+            Direction::Right => Direction::Left,
+        }
+    }
+
+    pub fn from_keycode(key: KeyCode) -> Option<Direction> {
+        match key {
+            KeyCode::Up => Some(Direction::Up),
+            KeyCode::Down => Some(Direction::Down),
+            KeyCode::Left => Some(Direction::Left),
+            KeyCode::Right => Some(Direction::Right),
+            _ => None,
+        }
+    }
+}
 
 
 struct Player {
     health: f32,
-    player_img: graphics::Image,
+    //player_img: graphics::Image,
     //i think i could add in the weapon they are holding here
     //just have another struct defining weapon types and such
+
+    pos: GridPosition,
+    dir: Direction,
+    last_update_dir: Direction,
+    next_dir: Option<Direction>,
+}
+
+impl Player {
+    pub fn new(pos: GridPosition) -> Self {
+        Player {
+            health: 100.0,
+            pos: GridPosition::new(20,20),
+            dir: Direction::Right,
+            last_update_dir: Direction::Right,
+            next_dir: None,
+
+        }
+    }
+
+    fn update(&mut self) {
+
+        if self.last_update_dir == self.dir && self.next_dir.is_some() {
+            self.dir = self.next_dir.unwrap();
+            self.next_dir = None;
+        }
+    
+        let new_pos = GridPosition::new_from_move(self.pos, self.dir);
+    }
+
+    fn draw(&self, canvas: &mut graphics::Canvas) {
+        canvas.draw(
+            &graphics::Quad,
+            graphics::DrawParam::new()
+                .dest_rect(self.pos.into())
+                .color([1.0, 0.5, 0.0, 1.0]),
+        );
+    }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+struct GridPosition {
+    x: i16,
+    y: i16,
 }
 
 
@@ -49,14 +153,11 @@ impl MainState {
             image2: image2,
             image3: image3,
             start_screen: true,
+            player: Player::new(GridPosition::new(20,20)),
             window_settings: WindowSettings {
                 fullscreen_type: conf::FullscreenType::Windowed,
                 toggle_fullscreen: false,
             },
-            player: Player {
-                health: MAX_HEALTH,
-                player_img: image4,
-            }
         };
         Ok(s)
     }
@@ -73,6 +174,11 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 self.window_settings.toggle_fullscreen = true;
                 ctx.gfx.set_fullscreen(self.window_settings.fullscreen_type)?;
                 self.window_settings.toggle_fullscreen = true;
+            }
+
+            if !self.start_screen {
+                self.player.update();
+
             }
         }
                     
@@ -108,6 +214,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
         else {
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
+
+            
             //trying to display player health
             let health_bar = ggez::glam::Vec2::new(50.0, 850.0); 
             canvas.draw(
@@ -116,7 +224,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             );
 
             let spawn = ggez::glam::Vec2::new(100.0, 200.0);
-            canvas.draw(&self.player.player_img, graphics::DrawParam::new().dest(spawn));
+            //canvas.draw(&self.player.player_img, graphics::DrawParam::new().dest(spawn));
 
             let scale1=ggez::glam::Vec2::new (0.05,0.05);
             let scale2=ggez::glam::Vec2::new (2.0,2.0);
@@ -144,13 +252,30 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     }
                 } 
                 }
+
+                self.player.draw(&mut canvas);
                 canvas.finish(ctx)?;
+                ggez::timer::yield_now();
     
             }
             Ok(())
         }
-}
 
+    fn key_down_event(&mut self, _ctx: &mut Context, input: KeyInput, _repeat: bool) -> GameResult {
+
+        if let Some(dir) = input.keycode.and_then(Direction::from_keycode) {
+
+            if self.player.dir != self.player.last_update_dir && dir.inverse() != self.player.dir {
+                self.player.next_dir = Some(dir);
+            }
+
+            else if dir.inverse() != self.player.last_update_dir {
+                self.player.dir = dir;
+            }
+        }
+        Ok(())
+    }
+}
 pub fn main() -> GameResult {
     let resource_dir = if let Ok(manifest_dir) = env::var("CARGO_MANIFEST_DIR") {
         let mut path = path::PathBuf::from(manifest_dir);
@@ -172,4 +297,3 @@ pub fn main() -> GameResult {
     event::run(ctx, event_loop, state)
 }
 
-//sim/ if you leave the start screen running, the "endless spire" text eventually disapears
