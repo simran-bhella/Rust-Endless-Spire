@@ -1,8 +1,7 @@
 use ggez::input::keyboard::{KeyCode, KeyInput};
-//use ggez::conf::WindowMode;
 use ggez::conf;
 use ggez::{event, graphics, Context, GameResult};
-use std::{env, path}; //,// KeyMods, KeyInput};
+use std::{env, path};
 
 const MAX_HEALTH: f32 = 100.0;
 
@@ -27,14 +26,6 @@ impl GridPosition {
         GridPosition {x, y}
     }
 
-//     pub fn new_from_move(pos: GridPosition, dir: Direction) -> Self {
-//         match dir {
-//             Direction::Up => GridPosition::new(pos.x, (pos.y - 1).rem_euclid(20)),
-//             Direction::Down => GridPosition::new(pos.x, (pos.y + 1).rem_euclid(20)),
-//             Direction::Left => GridPosition::new((pos.x - 1).rem_euclid(20), pos.y),
-//             Direction::Right => GridPosition::new((pos.x + 1).rem_euclid(20), pos.y),
-//         }
-//     }
 }
 
 impl From<(i16, i16)> for GridPosition {
@@ -51,29 +42,6 @@ enum Direction {
     Right,
 }
 
-// impl Direction {
-
-//     pub fn inverse(&self) -> Self {
-//         match *self {
-//             Direction::Up => Direction::Down,
-//             Direction::Down => Direction::Up,
-//             Direction::Left => Direction::Right,
-//             Direction::Right => Direction::Left,
-//         }
-//     }
-
-//     pub fn from_keycode(key: KeyCode) -> Option<Direction> {
-//         match key {
-//             KeyCode::Up => Some(Direction::Up),
-//             KeyCode::Down => Some(Direction::Down),
-//             KeyCode::Left => Some(Direction::Left),
-//             KeyCode::Right => Some(Direction::Right),
-//             _ => None,
-//         }
-//     }
-// }
-
-
 struct Player {
     health: f32,
     //player_img: graphics::Image,
@@ -82,8 +50,7 @@ struct Player {
 
     pos: GridPosition,
     dir: Direction,
-    // last_update_dir: Direction,
-    // next_dir: Option<Direction>,
+
 }
 
 impl Player {
@@ -92,21 +59,9 @@ impl Player {
             health: 100.0,
             pos: GridPosition::new(20,20),
             dir: Direction::Right,
-            // last_update_dir: Direction::Right,
-            // next_dir: None,
 
         }
     }
-
-    // fn update(&mut self) {
-
-    //     if self.last_update_dir == self.dir && self.next_dir.is_some() {
-    //         self.dir = self.next_dir.unwrap();
-    //         self.next_dir = None;
-    //     }
-    
-    //     let new_pos = GridPosition::new_from_move(self.pos, self.dir);
-    // }
 
     fn draw(&self, canvas: &mut graphics::Canvas) {
         canvas.draw(
@@ -176,10 +131,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 self.window_settings.toggle_fullscreen = true;
             }
 
-            // if !self.start_screen {
-            //     self.player.update();
-
-            // }
+            
         }
                     
         Ok(())
@@ -224,7 +176,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
             );
 
             let spawn = ggez::glam::Vec2::new(100.0, 200.0);
-            //canvas.draw(&self.player.player_img, graphics::DrawParam::new().dest(spawn));
 
             let scale1=ggez::glam::Vec2::new (0.05,0.05);
             let scale2=ggez::glam::Vec2::new (2.0,2.0);
@@ -289,17 +240,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
 
         }
-
-        // if let Some(dir) = input.keycode.and_then(Direction::from_keycode) {
-
-        //     if self.player.dir != self.player.last_update_dir && dir.inverse() != self.player.dir {
-        //         self.player.next_dir = Some(dir);
-        //     }
-
-        //     else if dir.inverse() != self.player.last_update_dir {
-        //         self.player.dir = dir;
-        //     }
-        // }
         Ok(())
     }
 }
