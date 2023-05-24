@@ -14,10 +14,10 @@ struct WindowSettings {
 impl From<GridPosition> for graphics::Rect {
     fn from(pos: GridPosition) -> Self {
         graphics::Rect::new_i32(
-            pos.x as i32 * 20 as i32,
-            pos.y as i32 * 20 as i32,
-            20 as i32,
-            20 as i32,
+            pos.x as i32 * 10 as i32,
+            pos.y as i32 * 10 as i32,
+            10 as i32,
+            10 as i32,
         )
     }
 }
@@ -267,19 +267,19 @@ impl event::EventHandler<ggez::GameError> for MainState {
         match input.keycode {
 
             Some(KeyCode::Up) => {
-                self.player.pos = GridPosition::new(self.player.pos.x, (self.player.pos.y - 1).rem_euclid(20));
+                self.player.pos = GridPosition::new(self.player.pos.x, (self.player.pos.y - 1).rem_euclid(75));
             }
 
             Some(KeyCode::Down) => {
-                self.player.pos = GridPosition::new(self.player.pos.x, (self.player.pos.y + 1).rem_euclid(20));
+                self.player.pos = GridPosition::new(self.player.pos.x, (self.player.pos.y + 1).rem_euclid(75));
             }
 
             Some(KeyCode::Left) => {
-                self.player.pos = GridPosition::new((self.player.pos.x - 1).rem_euclid(20), self.player.pos.y)
+                self.player.pos = GridPosition::new((self.player.pos.x - 1).rem_euclid(139), self.player.pos.y)
             }
 
             Some(KeyCode::Right) => {
-                self.player.pos = GridPosition::new((self.player.pos.x + 1).rem_euclid(20), self.player.pos.y)
+                self.player.pos = GridPosition::new((self.player.pos.x + 1).rem_euclid(139), self.player.pos.y)
             }
 
             _ => (),
