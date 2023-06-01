@@ -22,7 +22,9 @@ struct Levels {
 impl Levels {
 
     fn new() -> Self {
+        
         Levels {
+            
             map1: vec![(2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19), (2, 20), (2, 21), (2, 22), (2, 23), (2, 24), (2, 25), (2, 26), (2, 27), (2, 28),
             (63, 3), (63, 4), (63, 5), (63, 6), (63, 7), (63, 8), (63, 9), (63, 10), (63, 11), (63, 12), (63, 13), (63, 14), (63, 15), (63, 16), (63, 17), (63, 18), (63, 19), (63, 20), (63, 21), (63, 22), (63, 23), (63, 24), (63, 25), (63, 26), (63, 27), (63, 28),
             (2, 3), (3, 3), (4, 3), (5, 3), (6, 3), (7, 3), (8, 3), (9, 3), (10, 3), (11, 3), (12, 3), (13, 3), (14, 3), (15, 3), (16, 3), (17, 3), (18, 3), (19, 3), (20, 3), (21, 3), (22, 3), (23, 3), (24, 3), (25, 3), (26, 3), (27, 3), (28, 3), (29, 3), (30, 3), (31, 3), (32, 3), (33, 3), (34, 3), (35, 3), (36, 3), (37, 3), (38, 3), (39, 3), (40, 3), (41, 3), (42, 3), (43, 3), (44, 3), (45, 3), (46, 3), (47, 3), (48, 3), (49, 3), (50, 3), (51, 3), (52, 3), (53, 3), (54, 3), (55, 3), (56, 3), (57, 3), (58, 3), (59, 3), (60, 3), (61, 3), (62, 3), (63, 3), (64, 3),
@@ -99,8 +101,8 @@ impl From<GridPosition> for graphics::Rect {
         graphics::Rect::new_i32(
             pos.x as i32 * 10 as i32,
             pos.y as i32 * 10 as i32,
-            10 as i32,
-            10 as i32,
+            20 as i32,
+            20 as i32,
         )
     }
 }
@@ -110,6 +112,21 @@ impl GridPosition {
         GridPosition {x, y}
     }
 
+    /*fn contains(&self, maps: &Levels, a: i16, b: i16) -> bool {
+        for i in 0..a {
+            for j in 0..b {
+             //   if maps.map1[i.into()].0 == self.x.into() && maps.map1[i.into()].1 == self.y.into()
+               // {
+                    return true
+               // }
+            }
+        }
+        return false
+      
+
+
+    }
+    */
 }
 
 impl From<(i16, i16)> for GridPosition {
@@ -129,10 +146,10 @@ struct Player {
 }
 
 impl Player {
-    pub fn new(_pos: GridPosition) -> Self {
+    pub fn new() -> Self {
         Player {
             health: MAX_HEALTH,
-            pos: GridPosition::new(20,20),
+            pos: GridPosition::new(5,20),
         }
     }
 
@@ -141,9 +158,12 @@ impl Player {
             &graphics::Quad,
             graphics::DrawParam::new()
                 .dest_rect(self.pos.into())
+               // .dest(spawn)
                 .color([1.0, 0.5, 0.0, 1.0]),
         );
     }
+
+
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -171,6 +191,7 @@ struct MainState {
     level4: bool,
     level5: bool,
     end_screen: bool,
+    stair_pos: Vec<(i32, i32)>,
 }
 
 impl MainState {
@@ -182,6 +203,7 @@ impl MainState {
         let image3 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
     //    let image4 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
         let stair = graphics::Image::from_path(ctx, "/stair.png")?;
+        let stair_pos = vec![(63,26),(2,4)];
         let lvls = Levels::new();
         let s = MainState {
             frames: 0.0,
@@ -190,6 +212,7 @@ impl MainState {
             image2: image2,
             image3: image3,
             stair:  stair,
+            stair_pos: stair_pos,
             start_screen: true,
             level1: false,
             level2: false,
@@ -197,7 +220,7 @@ impl MainState {
             level4: false,
             level5: false,
             end_screen: false,
-            player: Player::new(GridPosition::new(20,20)),
+            player: Player::new(),
             window_settings: WindowSettings {
                 fullscreen_type: conf::FullscreenType::Windowed,
                 toggle_fullscreen: false,
@@ -206,6 +229,17 @@ impl MainState {
         };
         Ok(s)
     }
+
+    fn check_bounds(&self , pos: GridPosition) -> bool{
+                let a = pos.x;
+                let b = pos.y;
+                if self.levels.map4.contains(&(a.into(),b.into())) {
+                    return false
+                }
+                println!("Pos: {},{}", a, b);
+        return true
+      } 
+    
 }
 
 impl event::EventHandler<ggez::GameError> for MainState {
@@ -216,8 +250,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             if start_press.is_key_pressed(KeyCode::Space) {
                 self.start_screen = false;
                 self.window_settings.toggle_fullscreen = false;
-                ctx.gfx.set_fullscreen(self.window_settings.fullscreen_type)?;
-                self.window_settings.toggle_fullscreen = false;
+                //ctx.gfx.set_fullscreen(self.window_settings.fullscreen_type)?;
             }
         }
                     
@@ -267,7 +300,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
             let scale1=ggez::glam::Vec2::new (0.125,0.125);
             let scale2=ggez::glam::Vec2::new (5.0,5.0);
             let scale3=ggez::glam::Vec2::new (0.1,0.025);
-            let stair_pos = vec![(63,26),(2,4)];
             // Draw an image.
             
              for x in 2..64 {
@@ -275,9 +307,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
                      let dst = ggez::glam::Vec2::new(x as f32 *25.0-25.0, y as f32 *25.0+100.0);
                      let dst2 =ggez::glam::Vec2::new(x as f32 *25.0-27.5-25.0, y as f32 *25.0-27.5+100.0);
                      let dst3 =ggez::glam::Vec2::new(x as f32 *25.0-75.0, y as f32 *25.0+100.0);
-                      if self.levels.map1.contains(&(x, y)) {
+                      if self.levels.map4.contains(&(x, y)) {
                         canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
-                    }else if stair_pos.contains(&(x,y)){
+                    }else if self.stair_pos.contains(&(x,y)){
                         canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
                     }else { 
                         canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
@@ -286,7 +318,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
              
     }
-
                 self.player.draw(&mut canvas);
                 canvas.finish(ctx)?;
                 ggez::timer::yield_now();
@@ -301,19 +332,43 @@ impl event::EventHandler<ggez::GameError> for MainState {
         match input.keycode {
 
             Some(KeyCode::Up) => {
-                self.player.pos = GridPosition::new(self.player.pos.x, (self.player.pos.y - 1).rem_euclid(75));
+                let pos = GridPosition::new(self.player.pos.x, (self.player.pos.y - 1));//.rem_euclid(75));
+                if !MainState::check_bounds(self, pos) {
+                    self.player.pos.y = self.player.pos.y
+                }
+                else {
+                     self.player.pos = pos
+                }
             }
 
             Some(KeyCode::Down) => {
-                self.player.pos = GridPosition::new(self.player.pos.x, (self.player.pos.y + 1).rem_euclid(75));
+                let pos = GridPosition::new(self.player.pos.x, (self.player.pos.y + 1));//.rem_euclid(75));
+                if !MainState::check_bounds(self, pos) {
+                    self.player.pos.y = self.player.pos.y
+                }
+                else {
+                     self.player.pos = pos
+                } 
             }
 
             Some(KeyCode::Left) => {
-                self.player.pos = GridPosition::new((self.player.pos.x - 1).rem_euclid(139), self.player.pos.y)
+                let pos = GridPosition::new((self.player.pos.x - 1).rem_euclid(139), self.player.pos.y);
+                if !MainState::check_bounds(self, pos) {
+                    self.player.pos.x = self.player.pos.x
+                }
+                else {
+                     self.player.pos = pos
+                } 
             }
 
             Some(KeyCode::Right) => {
-                self.player.pos = GridPosition::new((self.player.pos.x + 1).rem_euclid(139), self.player.pos.y)
+                let pos = GridPosition::new((self.player.pos.x + 1).rem_euclid(139), self.player.pos.y);
+                if !MainState::check_bounds(self, pos) {
+                    self.player.pos.x = self.player.pos.x
+                }
+                else {
+                     self.player.pos = pos
+                } 
             }
 
             _ => (),
