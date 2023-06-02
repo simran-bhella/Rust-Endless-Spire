@@ -99,8 +99,8 @@ impl Levels {
 impl From<GridPosition> for graphics::Rect {
     fn from(pos: GridPosition) -> Self {
         graphics::Rect::new_i32(
-            pos.x as i32 * 10 as i32,
-            pos.y as i32 * 10 as i32,
+            pos.x as i32 * 20 as i32,
+            pos.y as i32 * 20 as i32,
             20 as i32,
             20 as i32,
         )
@@ -111,22 +111,6 @@ impl GridPosition {
     pub fn new(x: i16, y: i16) -> Self {
         GridPosition {x, y}
     }
-
-    /*fn contains(&self, maps: &Levels, a: i16, b: i16) -> bool {
-        for i in 0..a {
-            for j in 0..b {
-             //   if maps.map1[i.into()].0 == self.x.into() && maps.map1[i.into()].1 == self.y.into()
-               // {
-                    return true
-               // }
-            }
-        }
-        return false
-      
-
-
-    }
-    */
 }
 
 impl From<(i16, i16)> for GridPosition {
@@ -149,16 +133,17 @@ impl Player {
     pub fn new() -> Self {
         Player {
             health: MAX_HEALTH,
-            pos: GridPosition::new(5,20),
+            pos: GridPosition::new(2,3),
         }
     }
 
-    fn draw(&self, canvas: &mut graphics::Canvas) {
+    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition) {
+        let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+100.0);
         canvas.draw(
             &graphics::Quad,
             graphics::DrawParam::new()
                 .dest_rect(self.pos.into())
-               // .dest(spawn)
+                .dest(dst2)
                 .color([1.0, 0.5, 0.0, 1.0]),
         );
     }
@@ -231,12 +216,13 @@ impl MainState {
     }
 
     fn check_bounds(&self , pos: GridPosition) -> bool{
-                let a = pos.x;
-                let b = pos.y;
-                if self.levels.map4.contains(&(a.into(),b.into())) {
+        let dst = (pos.x as i32 *25-25, pos.y as i32 *25+100);
+        let a = pos.x;
+        let b = pos.y;
+        if self.levels.map4.contains(&(a.into(), b.into())) {
                     return false
-                }
-                println!("Pos: {},{}", a, b);
+        }
+        println!("Pos: {},{}", a, b);
         return true
       } 
     
@@ -309,7 +295,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                      let dst3 =ggez::glam::Vec2::new(x as f32 *25.0-75.0, y as f32 *25.0+100.0);
                       if self.levels.map4.contains(&(x, y)) {
                         canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
-                    }else if self.stair_pos.contains(&(x,y)){
+                    }else if self.stair_pos.contains(&(x, y)){
                         canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
                     }else { 
                         canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
@@ -318,7 +304,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
              
     }
-                self.player.draw(&mut canvas);
+                self.player.draw(&mut canvas, self.player.pos);
                 canvas.finish(ctx)?;
                 ggez::timer::yield_now();
     
@@ -352,7 +338,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
 
             Some(KeyCode::Left) => {
-                let pos = GridPosition::new((self.player.pos.x - 1).rem_euclid(139), self.player.pos.y);
+                let pos = GridPosition::new(self.player.pos.x - 1, self.player.pos.y);
                 if !MainState::check_bounds(self, pos) {
                     self.player.pos.x = self.player.pos.x
                 }
@@ -362,7 +348,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
 
             Some(KeyCode::Right) => {
-                let pos = GridPosition::new((self.player.pos.x + 1).rem_euclid(139), self.player.pos.y);
+                let pos = GridPosition::new(self.player.pos.x + 1, self.player.pos.y);
                 if !MainState::check_bounds(self, pos) {
                     self.player.pos.x = self.player.pos.x
                 }
