@@ -139,7 +139,7 @@ impl Player {
     pub fn new() -> Self {
         Player {
             health: MAX_HEALTH,
-            pos: GridPosition::new(2,3),
+            pos: GridPosition::new(4,5),
         }
     }
 
