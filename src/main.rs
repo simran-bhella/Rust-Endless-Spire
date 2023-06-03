@@ -2,6 +2,7 @@ use ggez::input::keyboard::{KeyCode, KeyInput};
 use ggez::conf;
 use ggez::{event, graphics, Context, GameResult};
 use std::{env, path};
+use rand::Rng;
 
 const MAX_HEALTH: f32 = 100.0;
 
@@ -157,6 +158,68 @@ impl Player {
 
 }
 
+struct Enemy {
+    health: f32,
+    pos: GridPosition,
+}
+
+impl Enemy {
+    pub fn new(x: i16, y: i16) -> Self {
+        Enemy {
+            health: MAX_HEALTH,
+            pos: GridPosition::new(x,y),
+        }
+    }
+
+    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition) {
+        let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+100.0);
+        canvas.draw(
+            &graphics::Quad,
+            graphics::DrawParam::new()
+                .dest_rect(self.pos.into())
+                .dest(dst2)
+                .color([0.0, 1.0, 0.0, 1.0]),
+        );
+    }
+
+    fn move_pos(&self) -> GridPosition {
+        let mut rng = rand::thread_rng();
+        let dir = rng.gen_range(1..5);
+
+        match dir {
+
+            1 => {
+                return GridPosition::new(self.pos.x, (self.pos.y - 1));
+
+            }
+
+            2 => {
+                return GridPosition::new(self.pos.x, (self.pos.y + 1))
+            }
+
+            3 => {
+                return GridPosition::new(self.pos.x - 1, self.pos.y);
+            }
+
+            4 => {
+                return GridPosition::new(self.pos.x + 1, self.pos.y);
+            }
+
+            _ => {
+                return self.pos;
+            }
+
+        }
+
+
+
+    }
+
+
+}
+
+
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 struct GridPosition {
     x: i16,
@@ -174,6 +237,7 @@ struct MainState {
     image3: graphics::Image,
     stair: graphics::Image,
     player: Player,
+    enemies: Vec<(Enemy)>,
     levels: Levels,
     start_screen: bool,
     level1: bool,
@@ -195,6 +259,7 @@ impl MainState {
     //    let image4 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
         let stair = graphics::Image::from_path(ctx, "/stair.png")?;
         let stair_pos = vec![(63,26),(2,4)];
+        let enemies = vec![Enemy::new(4,11),Enemy::new(11,6),Enemy::new(18,12),Enemy::new(26,8),Enemy::new(28,4),Enemy::new(39,7), Enemy::new(58,12)];
         let lvls = Levels::new();
         let s = MainState {
             frames: 0.0,
@@ -212,6 +277,7 @@ impl MainState {
             level5: false,
             end_screen: false,
             player: Player::new(),
+            enemies: enemies,
             window_settings: WindowSettings {
                 fullscreen_type: conf::FullscreenType::Windowed,
                 toggle_fullscreen: false,
@@ -311,6 +377,10 @@ impl event::EventHandler<ggez::GameError> for MainState {
              
     }
                 self.player.draw(&mut canvas, self.player.pos);
+                for enemy in &self.enemies {
+                    enemy.draw(&mut canvas, enemy.pos);
+                }
+                
                 canvas.finish(ctx)?;
                 ggez::timer::yield_now();
     
@@ -326,41 +396,113 @@ impl event::EventHandler<ggez::GameError> for MainState {
             Some(KeyCode::Up) => {
                 let pos = GridPosition::new(self.player.pos.x, (self.player.pos.y - 1));//.rem_euclid(75));
                 if !MainState::check_bounds(self, pos) {
-                    self.player.pos.y = self.player.pos.y
+                    self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos
+                     self.player.pos = pos;
+                } 
+
+                let mut i = 0;
+
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
                 }
             }
 
             Some(KeyCode::Down) => {
                 let pos = GridPosition::new(self.player.pos.x, (self.player.pos.y + 1));//.rem_euclid(75));
                 if !MainState::check_bounds(self, pos) {
-                    self.player.pos.y = self.player.pos.y
+                    self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos
+                     self.player.pos = pos;
                 } 
+
+                let mut i = 0;
+
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             Some(KeyCode::Left) => {
                 let pos = GridPosition::new(self.player.pos.x - 1, self.player.pos.y);
                 if !MainState::check_bounds(self, pos) {
-                    self.player.pos.x = self.player.pos.x
+                    self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos
+                     self.player.pos = pos;
                 } 
+
+                let mut i = 0;
+
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             Some(KeyCode::Right) => {
                 let pos = GridPosition::new(self.player.pos.x + 1, self.player.pos.y);
                 if !MainState::check_bounds(self, pos) {
-                    self.player.pos.x = self.player.pos.x
+                    self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos
+                     self.player.pos = pos;
                 } 
+
+                let mut i = 0;
+
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             _ => (),
