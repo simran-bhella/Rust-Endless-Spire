@@ -7,7 +7,7 @@ use rand::Rng;
 const MAX_HEALTH: f32 = 100.0;
 
 struct WindowSettings {
-    pub fullscreen_type: conf::FullscreenType,
+ //   pub fullscreen_type: conf::FullscreenType,
     toggle_fullscreen: bool,
 }
 
@@ -131,8 +131,13 @@ struct Player {
     //player_img: graphics::Image,
     //i think i could add in the weapon they are holding here
     //just have another struct defining weapon types and such
-
+    dir: i16,
+    //down is 0, down walking is 1, down walking is 2
+    //up is 3, up waking is 4, up waking is 5,
+    //left is 6, left walking 7, left walking 8
+    //right is 9, right walking is 10, right walking is 11,
     pos: GridPosition,
+    //sprite: graphics::Image,
 
 }
 
@@ -141,18 +146,20 @@ impl Player {
         Player {
             health: MAX_HEALTH,
             pos: GridPosition::new(4,5),
+            dir: 0,
         }
     }
 
-    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition) {
+    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition, pic: graphics::Image) {
         let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+100.0);
-        canvas.draw(
+        /*canvas.draw(
             &graphics::Quad,
             graphics::DrawParam::new()
                 .dest_rect(self.pos.into())
                 .dest(dst2)
                 .color([1.0, 0.5, 0.0, 1.0]),
-        );
+        );*/
+        canvas.draw(&pic, graphics::DrawParam::new().dest(dst2));
     }
 
 
@@ -235,6 +242,7 @@ struct MainState {
     image1: graphics::Image,
     image2: graphics::Image,
     image3: graphics::Image,
+    sprite: graphics::Image,
     stair: graphics::Image,
     player: Player,
     enemies: Vec<(Enemy)>,
@@ -256,6 +264,7 @@ impl MainState {
         let image1 = graphics::Image::from_path(ctx, "/shot.png")?;
         let image2 = graphics::Image::from_path(ctx, "/tile.png")?;
         let image3 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
+        let image4 = graphics::Image::from_path(ctx, "/warrior_m.png")?;
     //    let image4 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
         let stair = graphics::Image::from_path(ctx, "/stair.png")?;
         let stair_pos = vec![(63,26),(2,4)];
@@ -268,6 +277,7 @@ impl MainState {
             image2: image2,
             image3: image3,
             stair:  stair,
+            sprite: image4,
             stair_pos: stair_pos,
             start_screen: true,
             level1: false,
@@ -279,7 +289,7 @@ impl MainState {
             player: Player::new(),
             enemies: enemies,
             window_settings: WindowSettings {
-                fullscreen_type: conf::FullscreenType::Windowed,
+          //      fullscreen_type: conf::FullscreenType::Windowed,
                 toggle_fullscreen: false,
             },
             levels: lvls,
@@ -288,7 +298,6 @@ impl MainState {
     }
 
     fn check_bounds(&self , pos: GridPosition) -> bool{
-        let dst = (pos.x as i32 *25-25, pos.y as i32 *25+100);
         let a = pos.x;
         let b = pos.y;
         if self.levels.map4.contains(&(a.into(), b.into())) {
@@ -319,15 +328,15 @@ impl event::EventHandler<ggez::GameError> for MainState {
         if self.start_screen {
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
-            let dst = ggez::glam::Vec2::new(0.0, -120.0);
+            let dst = ggez::glam::Vec2::new(0.0, -80.0);
 
-            let tit = ggez::glam::Vec2::new(170.0, 225.0);
-            let text = ggez::glam::Vec2::new(220.0, 375.0);
+            let tit = ggez::glam::Vec2::new(200.0, 300.0);
+            let text = ggez::glam::Vec2::new(250.0, 410.0);
             let display = ggez::glam::Vec2::new(800.0, 600.0);
 
             canvas.draw(&self.background_img, graphics::DrawParam::new().dest(dst));
             canvas.draw(
-                graphics::Text::new("Endless Spire").set_scale(75.),
+                graphics::Text::new("Endless Spire").set_scale(85.),
                 graphics::DrawParam::default().dest(tit),
             );
             canvas.draw(
@@ -376,7 +385,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
              
     }
-                self.player.draw(&mut canvas, self.player.pos);
+                self.player.draw(&mut canvas, self.player.pos, self.sprite);
                 for enemy in &self.enemies {
                     enemy.draw(&mut canvas, enemy.pos);
                 }
