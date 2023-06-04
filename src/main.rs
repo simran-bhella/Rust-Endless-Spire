@@ -3,6 +3,7 @@ use ggez::conf;
 use ggez::{event, graphics, Context, GameResult};
 use std::{env, path};
 use rand::Rng;
+use ggez::graphics::Rect;
 
 const MAX_HEALTH: f32 = 100.0;
 
@@ -150,8 +151,8 @@ impl Player {
         }
     }
 
-    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition, pic: graphics::Image) {
-        let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+100.0);
+    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition, pic: &mut graphics::Image) {
+        let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+93.0);
         /*canvas.draw(
             &graphics::Quad,
             graphics::DrawParam::new()
@@ -159,8 +160,36 @@ impl Player {
                 .dest(dst2)
                 .color([1.0, 0.5, 0.0, 1.0]),
         );*/
-        canvas.draw(&pic, graphics::DrawParam::new().dest(dst2));
-    }
+        //down is 0, down walking is 1, down walking is 2
+        //up is 3, up waking is 4, up waking is 5,
+        //left is 6, left walking 7, left walking 8
+        //right is 9, right walking is 10, right walking is 11,
+        println!("dir: {}", self.dir);
+        match self.dir {
+
+            0 => {
+                let source_rect = Rect::new(0.35, 0.5, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect));
+            }
+            1 => {
+                let source_rect = Rect::new(0.0, 0.5, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            2 => {
+                let source_rect = Rect::new(0.7, 0.5, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            _ => {
+
+            }
+        }
+    } 
 
 
 }
@@ -303,7 +332,7 @@ impl MainState {
         if self.levels.map4.contains(&(a.into(), b.into())) {
                     return false
         }
-        println!("Pos: {},{}", a, b);
+    //    println!("Pos: {},{}", a, b);
         return true
       } 
     
@@ -385,7 +414,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
              
     }
-                self.player.draw(&mut canvas, self.player.pos, self.sprite);
+                self.player.draw(&mut canvas, self.player.pos, &mut self.sprite);
                 for enemy in &self.enemies {
                     enemy.draw(&mut canvas, enemy.pos);
                 }
@@ -402,15 +431,25 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
         match input.keycode {
 
+            //down is 0, down walking is 1, down walking is 2
+            //up is 3, up waking is 4, up waking is 5,
+            //left is 6, left walking 7, left walking 8
+            //right is 9, right walking is 10, right walking is 11,
             Some(KeyCode::Up) => {
-                let pos = GridPosition::new(self.player.pos.x, (self.player.pos.y - 1));//.rem_euclid(75));
+                let pos = GridPosition::new(self.player.pos.x, self.player.pos.y - 1);//.rem_euclid(75));
                 if !MainState::check_bounds(self, pos) {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
                      self.player.pos = pos;
                 } 
-
+                if self.player.dir >= 6 {
+                    self.player.dir = 3;
+                }
+                if self.player.dir <= 6
+                {
+                    self.player.dir += 1;
+                }
                 let mut i = 0;
 
                 while i < self.enemies.len() {
@@ -431,7 +470,15 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
 
             Some(KeyCode::Down) => {
-                let pos = GridPosition::new(self.player.pos.x, (self.player.pos.y + 1));//.rem_euclid(75));
+                let pos = GridPosition::new(self.player.pos.x, self.player.pos.y + 1);//.rem_euclid(75));
+                if self.player.dir < 3
+                {
+                    self.player.dir += 1;
+                }
+                if self.player.dir >= 3 
+                {
+                    self.player.dir = 0;
+                }
                 if !MainState::check_bounds(self, pos) {
                     self.player.pos.x = self.player.pos.x;
                 }
@@ -467,6 +514,13 @@ impl event::EventHandler<ggez::GameError> for MainState {
                      self.player.pos = pos;
                 } 
 
+                if self.player.dir < 10 
+                {
+                    self.player.dir += 1;
+                }
+                else {
+                    self.player.dir = 6;
+                }
                 let mut i = 0;
 
                 while i < self.enemies.len() {
@@ -494,7 +548,13 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 else {
                      self.player.pos = pos;
                 } 
-
+                if self.player.dir < 13 
+                {
+                    self.player.dir+=1;
+                }
+                else {
+                    self.player.dir = 9;
+                }
                 let mut i = 0;
 
                 while i < self.enemies.len() {
