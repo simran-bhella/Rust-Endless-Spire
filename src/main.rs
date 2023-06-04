@@ -18,6 +18,11 @@ struct Levels {
     map3: Vec<(i32, i32)>,
     map4: Vec<(i32, i32)>,
     map5: Vec<(i32, i32)>,
+    stair_12:Vec<(i32, i32)>,
+    stair_23:Vec<(i32, i32)>,
+    stair_34:Vec<(i32, i32)>,
+    stair_45:Vec<(i32, i32)>,
+    stair_end:Vec<(i32, i32)>,
 }
 
 impl Levels {
@@ -99,6 +104,16 @@ impl Levels {
                 22), (45, 22), (50, 22), (54, 22), (55, 22), (61, 22), (3, 23), (6, 23), (7, 23), (12, 23), (16, 23), (26, 23), (40, 23), (43, 23), (46, 23), (51, 23), (55, 23), (62, 23), (2, 24), (6, 24), (7, 24), (12, 24), (16, 24), (17, 24), (18, 24), (19, 
                 24), (24, 24), (25, 24), (41, 24), (42, 24), (43, 24), (47, 24), (48, 24), (49, 24), (50, 24), (55, 24), (56, 24), (63, 24), (2, 25), (5, 25), (7, 25), (12, 25), (20, 25), (21, 25), (22, 25), (23, 25), (56, 25), (64, 25), (2, 26), (4, 26), (7, 
                 26), (10, 26), (11, 26), (57, 26), (58, 26), (59, 26), (3, 27), (6, 27), (8, 27), (9, 27), (59, 27), (60, 27), (2, 28), (6, 28), (7, 28), (61, 28), (62, 28), (63, 28), (64, 28)],
+            
+            stair_12:vec![(62,26)],
+
+            stair_23:vec![(62,26)],
+
+            stair_34:vec![(7,23),(7,22)],
+
+            stair_45:vec![(62,6)],
+
+            stair_end:vec![(62,15)],
         }
     }
 }
@@ -140,7 +155,7 @@ impl Player {
     pub fn new() -> Self {
         Player {
             health: MAX_HEALTH,
-            pos: GridPosition::new(4,5),
+            pos: GridPosition::new(3,13),
         }
     }
 
@@ -291,12 +306,66 @@ impl MainState {
         let dst = (pos.x as i32 *25-25, pos.y as i32 *25+100);
         let a = pos.x;
         let b = pos.y;
-        if self.levels.map4.contains(&(a.into(), b.into())) {
+        if self.level1 == false {
+            if self.levels.map1.contains(&(a.into(), b.into())) {
                     return false
+            }
+        }
+        else if self.level2 == false {
+            if self.levels.map2.contains(&(a.into(), b.into())) {
+                    return false
+            }
+        }
+        else if self.level3 == false {
+            if self.levels.map3.contains(&(a.into(), b.into())) {
+                    return false
+            }
+        }
+        else if self.level4 == false {
+            if self.levels.map4.contains(&(a.into(), b.into())) {
+                    return false
+            }
+        }
+        else {
+            if self.levels.map5.contains(&(a.into(), b.into())) {
+                    return false
+            }
         }
         println!("Pos: {},{}", a, b);
         return true
       } 
+    
+    fn check_stairs(&self , pos: GridPosition) -> bool{
+        let dst = (pos.x as i32 *25-25, pos.y as i32 *25+100);
+        let a = pos.x;
+        let b = pos.y;
+        if self.level1 == false {
+            if self.levels.stair_12.contains(&(a.into(), b.into())) {
+                    return true
+            }
+        }
+        else if self.level2 == false {
+            if self.levels.stair_23.contains(&(a.into(), b.into())) {
+                    return true
+            }
+        }
+        else if self.level3 == false {
+            if self.levels.stair_34.contains(&(a.into(), b.into())) {
+                    return true
+            }
+        }
+        else if self.level4 == false {
+            if self.levels.stair_45.contains(&(a.into(), b.into())) {
+                    return true
+            }
+        }
+        else {
+            if self.levels.stair_end.contains(&(a.into(), b.into())) {
+                    return true
+            }
+        }
+        return false
+    }
     
 }
 
@@ -365,14 +434,48 @@ impl event::EventHandler<ggez::GameError> for MainState {
                      let dst = ggez::glam::Vec2::new(x as f32 *25.0-25.0, y as f32 *25.0+100.0);
                      let dst2 =ggez::glam::Vec2::new(x as f32 *25.0-27.5-25.0, y as f32 *25.0-27.5+100.0);
                      let dst3 =ggez::glam::Vec2::new(x as f32 *25.0-75.0, y as f32 *25.0+100.0);
-                      if self.levels.map4.contains(&(x, y)) {
-                        canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
-                    }else if self.stair_pos.contains(&(x, y)){
-                        canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
-                    }else { 
-                        canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
-                    }
                     
+                    if self.level1 == false {
+                        if self.levels.map1.contains(&(x, y)) {
+                            canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
+                        }else if self.levels.stair_12.contains(&(x, y)){
+                            canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
+                        }else { 
+                            canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
+                        }
+                    }else if self.level2 == false {
+                        if self.levels.map2.contains(&(x, y)) {
+                            canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
+                        }else if self.levels.stair_23.contains(&(x, y)){
+                            canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
+                        }else { 
+                            canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
+                        }
+                    }else if self.level3 == false {
+                        if self.levels.map3.contains(&(x, y)) {
+                            canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
+                        }else if self.levels.stair_34.contains(&(x, y)){
+                            canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
+                        }else { 
+                            canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
+                        }
+                    }else if self.level4 == false {
+                        if self.levels.map4.contains(&(x, y)) {
+                            canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
+                        }else if self.levels.stair_45.contains(&(x, y)){
+                            canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
+                        }else { 
+                            canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
+                        }
+                    }else {
+                        if self.levels.map5.contains(&(x, y)) {
+                            canvas.draw(&self.image2, graphics::DrawParam::new().dest(dst).scale(scale1));     
+                        }else if self.levels.stair_end.contains(&(x, y)){
+                            canvas.draw(&self.stair,graphics::DrawParam::new().dest(dst3).scale(scale3));
+                        }else { 
+                            canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
+                        }
+                    } 
             }
              
     }
@@ -401,6 +504,24 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 else {
                      self.player.pos = pos;
                 } 
+                
+                if MainState::check_stairs(self,pos) {
+                    if self.level1 == false {
+                        self.level1 = true;
+                        self.player.pos = GridPosition::new(3,4);
+                    }else if self.level2 == false {
+                        self.level2 = true;
+                        self.player.pos = GridPosition::new(5,15);
+                    }else if self.level3 == false {
+                        self.level3 = true;
+                        self.player.pos = GridPosition::new(4,26);
+                    }else if self.level4 == false {
+                        self.level4 = true;
+                        self.player.pos = GridPosition::new(3,15);
+                    }else {
+                        self.level5 = true;
+                    }
+                }
 
                 let mut i = 0;
 
@@ -431,6 +552,24 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 } 
 
                 let mut i = 0;
+                
+                if MainState::check_stairs(self,pos) {
+                    if self.level1 == false {
+                        self.level1 = true;
+                        self.player.pos = GridPosition::new(3,4);
+                    }else if self.level2 == false {
+                        self.level2 = true;
+                        self.player.pos = GridPosition::new(5,15);
+                    }else if self.level3 == false {
+                        self.level3 = true;
+                        self.player.pos = GridPosition::new(4,26);
+                    }else if self.level4 == false {
+                        self.level4 = true;
+                        self.player.pos = GridPosition::new(3,15);
+                    }else {
+                        self.level5 = true;
+                    }
+                }
 
                 while i < self.enemies.len() {
                     
@@ -460,6 +599,24 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
                 let mut i = 0;
 
+                if MainState::check_stairs(self,pos) {
+                    if self.level1 == false {
+                        self.level1 = true;
+                        self.player.pos = GridPosition::new(3,4);
+                    }else if self.level2 == false {
+                        self.level2 = true;
+                        self.player.pos = GridPosition::new(5,15);
+                    }else if self.level3 == false {
+                        self.level3 = true;
+                        self.player.pos = GridPosition::new(4,26);
+                    }else if self.level4 == false {
+                        self.level4 = true;
+                        self.player.pos = GridPosition::new(3,15);
+                    }else {
+                        self.level5 = true;
+                    }
+                }
+
                 while i < self.enemies.len() {
                     
                     let enemy_pos = self.enemies[i].move_pos();
@@ -487,6 +644,24 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 } 
 
                 let mut i = 0;
+
+                if MainState::check_stairs(self,pos) {
+                    if self.level1 == false {
+                        self.level1 = true;
+                        self.player.pos = GridPosition::new(3,4);
+                    }else if self.level2 == false {
+                        self.level2 = true;
+                        self.player.pos = GridPosition::new(5,15);
+                    }else if self.level3 == false {
+                        self.level3 = true;
+                        self.player.pos = GridPosition::new(4,26);
+                    }else if self.level4 == false {
+                        self.level4 = true;
+                        self.player.pos = GridPosition::new(3,15);
+                    }else {
+                        self.level5 = true;
+                    }
+                }
 
                 while i < self.enemies.len() {
                     
