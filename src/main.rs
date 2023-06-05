@@ -161,7 +161,7 @@ impl Player {
                 .color([1.0, 0.5, 0.0, 1.0]),
         );*/
         //down is 0, down walking is 1, down walking is 2
-        //up is 3, up waking is 4, up waking is 5,
+        //up is 3, up walking is 4, up walking is 5,
         //left is 6, left walking 7, left walking 8
         //right is 9, right walking is 10, right walking is 11,
         println!("dir: {}", self.dir);
@@ -185,6 +185,63 @@ impl Player {
                 .dest(dst2)
                 .src(source_rect)); 
             }
+            3 => {
+                let source_rect = Rect::new(0.35, 0.0, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            4 => {
+                let source_rect = Rect::new(0.7, 0.0, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            5 => {
+                let source_rect = Rect::new(0.0, 0.0, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            6 => {
+                let source_rect = Rect::new(0.35, 0.75, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            7 => {
+                let source_rect = Rect::new(0.7, 0.75, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            8 => {
+                let source_rect = Rect::new(0.0, 0.75, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            9 => {
+                let source_rect = Rect::new(0.35, 0.25, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            10 => {
+                let source_rect = Rect::new(0.7, 0.25, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            11 => {
+                let source_rect = Rect::new(0.0, 0.25, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+
+
+
             _ => {
 
             }
@@ -197,6 +254,7 @@ impl Player {
 struct Enemy {
     health: f32,
     pos: GridPosition,
+
 }
 
 impl Enemy {
@@ -207,15 +265,86 @@ impl Enemy {
         }
     }
 
-    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition) {
+    fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition, dir: i16, pic: &mut graphics::Image) {
         let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+100.0);
-        canvas.draw(
-            &graphics::Quad,
-            graphics::DrawParam::new()
-                .dest_rect(self.pos.into())
+        match dir {
+
+            0 => {
+                let source_rect = Rect::new(0.35, 0.5, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
                 .dest(dst2)
-                .color([0.0, 1.0, 0.0, 1.0]),
-        );
+                .src(source_rect));
+            }
+            1 => {
+                let source_rect = Rect::new(0.0, 0.5, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            2 => {
+                let source_rect = Rect::new(0.7, 0.5, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            3 => {
+                let source_rect = Rect::new(0.35, 0.0, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            4 => {
+                let source_rect = Rect::new(0.7, 0.0, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            5 => {
+                let source_rect = Rect::new(0.0, 0.0, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            6 => {
+                let source_rect = Rect::new(0.35, 0.75, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            7 => {
+                let source_rect = Rect::new(0.7, 0.75, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            8 => {
+                let source_rect = Rect::new(0.0, 0.75, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            9 => {
+                let source_rect = Rect::new(0.35, 0.25, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            10 => {
+                let source_rect = Rect::new(0.7, 0.25, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            11 => {
+                let source_rect = Rect::new(0.0, 0.25, 0.3, 0.26);
+                canvas.draw(pic, graphics::DrawParam::new()
+                .dest(dst2)
+                .src(source_rect)); 
+            }
+            _ => {
+            }
+        }
+
     }
 
     fn move_pos(&self) -> GridPosition {
@@ -272,6 +401,7 @@ struct MainState {
     image2: graphics::Image,
     image3: graphics::Image,
     sprite: graphics::Image,
+    enemy_sprite: graphics::Image,
     stair: graphics::Image,
     player: Player,
     enemies: Vec<(Enemy)>,
@@ -296,6 +426,7 @@ impl MainState {
         let image4 = graphics::Image::from_path(ctx, "/warrior_m.png")?;
     //    let image4 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
         let stair = graphics::Image::from_path(ctx, "/stair.png")?;
+        let e = graphics::Image::from_path(ctx, "/mage_m.png")?;
         let stair_pos = vec![(63,26),(2,4)];
         let enemies = vec![Enemy::new(4,11),Enemy::new(11,6),Enemy::new(18,12),Enemy::new(26,8),Enemy::new(28,4),Enemy::new(39,7), Enemy::new(58,12)];
         let lvls = Levels::new();
@@ -315,6 +446,7 @@ impl MainState {
             level4: false,
             level5: false,
             end_screen: false,
+            enemy_sprite: e,
             player: Player::new(),
             enemies: enemies,
             window_settings: WindowSettings {
@@ -416,7 +548,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
     }
                 self.player.draw(&mut canvas, self.player.pos, &mut self.sprite);
                 for enemy in &self.enemies {
-                    enemy.draw(&mut canvas, enemy.pos);
+                    enemy.draw(&mut canvas, enemy.pos, self.player.dir, &mut self.enemy_sprite);
                 }
                 
                 canvas.finish(ctx)?;
@@ -443,11 +575,12 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 else {
                      self.player.pos = pos;
                 } 
-                if self.player.dir >= 6 {
+
+                if self.player.dir >= 5 || self.player.dir <= 2 
+                {
                     self.player.dir = 3;
                 }
-                if self.player.dir <= 6
-                {
+                else {
                     self.player.dir += 1;
                 }
                 let mut i = 0;
@@ -514,13 +647,13 @@ impl event::EventHandler<ggez::GameError> for MainState {
                      self.player.pos = pos;
                 } 
 
-                if self.player.dir < 10 
+                if self.player.dir >= 8 || self.player.dir <= 5 
                 {
-                    self.player.dir += 1;
-                }
-                else {
                     self.player.dir = 6;
                 }
+                else {
+                    self.player.dir += 1;
+                } 
                 let mut i = 0;
 
                 while i < self.enemies.len() {
@@ -548,12 +681,12 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 else {
                      self.player.pos = pos;
                 } 
-                if self.player.dir < 13 
+                if self.player.dir >= 11 || self.player.dir <= 8 
                 {
-                    self.player.dir+=1;
+                    self.player.dir = 9;
                 }
                 else {
-                    self.player.dir = 9;
+                    self.player.dir += 1;
                 }
                 let mut i = 0;
 
