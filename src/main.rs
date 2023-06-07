@@ -252,11 +252,7 @@ struct MainState {
     image3: graphics::Image,
     stair: graphics::Image,
     player: Player,
-    enemies1: Vec<(Enemy)>,
-    enemies2: Vec<(Enemy)>,
-    enemies3: Vec<(Enemy)>,
-    enemies4: Vec<(Enemy)>,
-    enemies5: Vec<(Enemy)>,
+    enemies: Vec<(Enemy)>,
     levels: Levels,
     start_screen: bool,
     level1: bool,
@@ -278,6 +274,7 @@ impl MainState {
     //    let image4 = graphics::Image::from_path(ctx, "/wabbit_alpha.png")?;
         let stair = graphics::Image::from_path(ctx, "/stair.png")?;
         let stair_pos = vec![(63,26),(2,4)];
+        let enemies = vec![Enemy::new(4,11),Enemy::new(11,6),Enemy::new(18,12),Enemy::new(26,8),Enemy::new(28,4),Enemy::new(39,7), Enemy::new(58,12)];
         let lvls = Levels::new();
         let s = MainState {
             frames: 0.0,
@@ -295,98 +292,7 @@ impl MainState {
             level5: false,
             dead: false,
             player: Player::new(),
-            enemies1: vec![
-                Enemy::new(5, 19),
-                Enemy::new(9, 24),
-                Enemy::new(13, 13),
-                Enemy::new(19, 11),
-                Enemy::new(24, 18),
-                Enemy::new(27, 24),
-                Enemy::new(27, 6),
-                Enemy::new(35, 10),
-                Enemy::new(51, 6),
-                Enemy::new(45, 19),
-                Enemy::new(46, 25),
-                Enemy::new(58, 21),
-            ],
-            enemies2: vec![
-                Enemy::new(3, 10),
-                Enemy::new(11, 16),
-                Enemy::new(9, 10),
-                Enemy::new(5, 21),
-                Enemy::new(3, 26),
-                Enemy::new(19, 20),
-                Enemy::new(23, 22),
-                Enemy::new(29, 14),
-                Enemy::new(25, 9),
-                Enemy::new(11, 6),
-                Enemy::new(33, 19),
-                Enemy::new(32, 10),
-                Enemy::new(37, 17),
-                Enemy::new(39, 11),
-                Enemy::new(45, 24),
-                Enemy::new(59, 16),
-                Enemy::new(57, 8),
-                Enemy::new(62, 20),
-                Enemy::new(61, 14),
-                Enemy::new(62, 4),
-                Enemy::new(51, 8),
-                Enemy::new(47, 11),
-                Enemy::new(45, 10),
-            ],
-            enemies3: vec![
-                Enemy::new(6, 7),
-                Enemy::new(13, 5),
-                Enemy::new(23, 8),
-                Enemy::new(32, 7),
-                Enemy::new(43, 7),
-                Enemy::new(51, 7),
-                Enemy::new(47, 8),
-                Enemy::new(24, 14),
-                Enemy::new(20, 16),
-                Enemy::new(48, 15),
-                Enemy::new(61, 10),
-                Enemy::new(61, 22),
-                Enemy::new(48, 23),
-                Enemy::new(33, 22),
-                Enemy::new(27, 23),
-                Enemy::new(18, 23),
-                Enemy::new(12, 23),
-            ],
-            enemies4: vec![
-                Enemy::new(13, 23),
-                Enemy::new(7, 15),
-                Enemy::new(11, 7),
-                Enemy::new(18, 18),
-                Enemy::new(28, 22),
-                Enemy::new(31, 13),
-                Enemy::new(44, 25),
-                Enemy::new(41, 15),
-                Enemy::new(47, 7),
-                Enemy::new(49, 51),
-                Enemy::new(59, 20),
-                Enemy::new(57, 8),
-                Enemy::new(56, 12),
-                
-
-            ],
-            enemies5: vec![
-                Enemy::new(8, 15),
-                Enemy::new(8, 19),
-                Enemy::new(13, 18),
-                Enemy::new(17, 15),
-                Enemy::new(9, 24),
-                Enemy::new(15, 8),
-                Enemy::new(21, 16),
-                Enemy::new(25, 16),
-                Enemy::new(30, 16),
-                Enemy::new(39, 20),
-                Enemy::new(39, 11),
-                Enemy::new(48, 22),
-                Enemy::new(59, 23),
-                Enemy::new(59, 8),
-                Enemy::new(51, 9),
-            ],
+            enemies: enemies,
             window_settings: WindowSettings {
                 fullscreen_type: conf::FullscreenType::Windowed,
                 toggle_fullscreen: false,
@@ -785,31 +691,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
     }
                  
                 self.player.draw(&mut canvas, self.player.pos);
-
-                if self.level1 == false {
-                    for enemy in &self.enemies1 {
-                        enemy.draw(&mut canvas, enemy.pos);
-                    }
-                }
-                else if self.level2 == false {
-                    for enemy in &self.enemies2 {
-                        enemy.draw(&mut canvas, enemy.pos);
-                    }
-                }
-                else if self.level3 == false {
-                    for enemy in &self.enemies3 {
-                        enemy.draw(&mut canvas, enemy.pos);
-                    }
-                }
-                else if self.level4 == false {
-                    for enemy in &self.enemies4 {
-                        enemy.draw(&mut canvas, enemy.pos);
-                    }
-                }
-                else {
-                    for enemy in &self.enemies5 {
-                        enemy.draw(&mut canvas, enemy.pos);
-                    }
+                for enemy in &self.enemies {
+                    enemy.draw(&mut canvas, enemy.pos);
                 }
                 
                 canvas.finish(ctx)?;
@@ -853,7 +736,23 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     }
                 }
 
-                self.move_enemy();
+                let mut i = 0;
+
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             Some(KeyCode::Down) => {
@@ -866,6 +765,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                   
                     self.player.pos = pos;
                 } 
+
+                let mut i = 0;
                 
                 if MainState::check_stairs(self,pos) {
                     if self.level1 == false {
@@ -885,7 +786,21 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     }
                 }
 
-                self.move_enemy();
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             Some(KeyCode::Left) => {
@@ -899,6 +814,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos = pos;
                 } 
 
+                let mut i = 0;
+
                 if MainState::check_stairs(self,pos) {
                     if self.level1 == false {
                         self.level1 = true;
@@ -917,7 +834,21 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     }
                 }
 
-                self.move_enemy();
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             Some(KeyCode::Right) => {
@@ -930,6 +861,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                       self.player.pos = pos;
                 } 
 
+                let mut i = 0;
+
                 if MainState::check_stairs(self,pos) {
                     if self.level1 == false {
                         self.level1 = true;
@@ -948,7 +881,21 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     }
                 }
 
-                self.move_enemy();
+                while i < self.enemies.len() {
+                    
+                    let enemy_pos = self.enemies[i].move_pos();
+
+                    if !MainState::check_bounds(self, enemy_pos) {
+                        self.enemies[i].pos = self.enemies[i].pos;
+                    }
+
+                    else {
+                        self.enemies[i].pos = enemy_pos;
+                    }
+
+                    i += 1;
+
+                }
             }
 
             _ => (),
