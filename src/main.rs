@@ -780,7 +780,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::DrawParam::default().dest(tit),
             );
             canvas.draw(
-                graphics::Text::new("Press Any Key to Continue").set_scale(35.),
+                graphics::Text::new("Press Space to Continue").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
 
@@ -806,7 +806,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::DrawParam::default().dest(tit),
             );
             canvas.draw(
-                graphics::Text::new("Press Any Key to Restart").set_scale(35.),
+                graphics::Text::new("Press Space to Restart").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
 
@@ -832,7 +832,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::DrawParam::default().dest(tit),
             );
             canvas.draw(
-                graphics::Text::new("Press Any Key to Restart").set_scale(35.),
+                graphics::Text::new("Press Space to Restart").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
 
@@ -1129,7 +1129,7 @@ pub fn main() -> GameResult {
 
     let cb = ggez::ContextBuilder::new("Endless Spire", "me")
         .add_resource_path(resource_dir)
-        .window_mode(conf::WindowMode::default().dimensions(1600.0, 1000.0));
+        .window_mode(conf::WindowMode::default().dimensions(1600.0, 900.0));
 
     //sim/ changed ctx to be mutable, passed into Mainstate::new argument
     let (mut ctx, event_loop) = cb.build()?;
