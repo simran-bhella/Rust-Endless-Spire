@@ -8,7 +8,6 @@ use ggez::graphics::Rect;
 const MAX_HEALTH: f32 = 3.0;
 
 struct WindowSettings {
-  //  pub fullscreen_type: conf::FullscreenType,
     toggle_fullscreen: bool,
 }
 
@@ -128,9 +127,6 @@ impl GridPosition {
 
 struct Player {
     health: f32,
-    //player_img: graphics::Image,
-    //i think i could add in the weapon they are holding here
-    //just have another struct defining weapon types and such
     dir: i16,
     pos: GridPosition,
 
@@ -334,32 +330,21 @@ impl Enemy {
 
             1 => {
                 return GridPosition::new(self.pos.x, self.pos.y - 1);
-
             }
-
             2 => {
                 return GridPosition::new(self.pos.x, self.pos.y + 1)
             }
-
             3 => {
                 return GridPosition::new(self.pos.x - 1, self.pos.y);
             }
-
             4 => {
                 return GridPosition::new(self.pos.x + 1, self.pos.y);
             }
-
             _ => {
                 return self.pos;
             }
-
         }
-
-
-
     }
-
-
 }
 
 
@@ -369,7 +354,6 @@ struct GridPosition {
     x: i16,
     y: i16,
 }
-
 
 //sim/ added background
 struct MainState {
@@ -594,44 +578,32 @@ impl MainState {
     fn move_enemy(&mut self) {
         let mut i = 0;
         if self.level1 == false {
-            while i < self.enemies1.len() {
-                    
+            while i < self.enemies1.len() {   
                 let enemy_pos = self.enemies1[i].move_pos();
-
                 if !MainState::check_bounds(self, enemy_pos) {
                     self.enemies1[i].pos = self.enemies1[i].pos;
                 }
-
                 else {
                     self.enemies1[i].pos = enemy_pos;
                 }
-
                 i += 1;
-
             }
         }
         else if self.level2 == false {
-            while i < self.enemies2.len() {
-                    
+            while i < self.enemies2.len() {    
                 let enemy_pos = self.enemies2[i].move_pos();
-
                 if !MainState::check_bounds(self, enemy_pos) {
                     self.enemies2[i].pos = self.enemies2[i].pos;
                 }
-
                 else {
                     self.enemies2[i].pos = enemy_pos;
                 }
-
                 i += 1;
-
             }
         }
         else if self.level3 == false {
             while i < self.enemies3.len() {
-                    
                 let enemy_pos = self.enemies3[i].move_pos();
-
                 if !MainState::check_bounds(self, enemy_pos) {
                     self.enemies3[i].pos = self.enemies3[i].pos;
                 }
@@ -639,43 +611,31 @@ impl MainState {
                 else {
                     self.enemies3[i].pos = enemy_pos;
                 }
-
                 i += 1;
-
             }
         }
         else if self.level4 == false {
-            while i < self.enemies4.len() {
-                    
+            while i < self.enemies4.len() {   
                 let enemy_pos = self.enemies4[i].move_pos();
-
                 if !MainState::check_bounds(self, enemy_pos) {
                     self.enemies4[i].pos = self.enemies4[i].pos;
                 }
-
                 else {
                     self.enemies4[i].pos = enemy_pos;
                 }
-
                 i += 1;
-
             }
         }
         else {
-            while i < self.enemies5.len() {
-                    
+            while i < self.enemies5.len() {   
                 let enemy_pos = self.enemies5[i].move_pos();
-
                 if !MainState::check_bounds(self, enemy_pos) {
                     self.enemies5[i].pos = self.enemies5[i].pos;
                 }
-
                 else {
                     self.enemies5[i].pos = enemy_pos;
                 }
-
                 i += 1;
-
             }
         }
     }
@@ -690,7 +650,6 @@ impl MainState {
                     self.player.health -= 1.0;
                 }
             }     
-            
         }
         else if self.level2 == false {
             let enemy_positions: Vec<GridPosition> = self.enemies2.iter().map(|enemy| enemy.pos).collect();
@@ -699,7 +658,6 @@ impl MainState {
                     self.player.health -= 1.0;
                 }
             }   
-            
         }
         else if self.level3 == false {
             let enemy_positions: Vec<GridPosition> = self.enemies3.iter().map(|enemy| enemy.pos).collect();
@@ -708,7 +666,6 @@ impl MainState {
                     self.player.health -= 1.0;
                 }
             }   
-            
         }
         else if self.level4 == false {
             let enemy_positions: Vec<GridPosition> = self.enemies4.iter().map(|enemy| enemy.pos).collect();
@@ -717,7 +674,6 @@ impl MainState {
                     self.player.health -= 1.0;
                 }
             }   
-            
         }
         else {
             let enemy_positions: Vec<GridPosition> = self.enemies5.iter().map(|enemy| enemy.pos).collect();
@@ -726,15 +682,11 @@ impl MainState {
                     self.player.health -= 1.0;
                 }
             }   
-            
         }
-
         if self.player.health < 1.0 {
             self.dead=true;
         }
     }
-       
-
 }
 
       
@@ -758,8 +710,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.health = MAX_HEALTH;
                 }
             }
-        }
-                    
+        }         
         Ok(())
     }
     
@@ -769,7 +720,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
             let dst = ggez::glam::Vec2::new(0.0, -120.0);
-
             let tit = ggez::glam::Vec2::new(170.0, 225.0);
             let text = ggez::glam::Vec2::new(220.0, 375.0);
             let display = ggez::glam::Vec2::new(800.0, 600.0);
@@ -783,19 +733,15 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::Text::new("Press Space to Continue").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
-
-            canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
-            
+            canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));     
             self.frames = 200.;
-            canvas.finish(ctx)?;
-            
+            canvas.finish(ctx)?;  
         }
 
         else if self.level5==true{
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
             let dst = ggez::glam::Vec2::new(0.0, -120.0);
-
             let tit = ggez::glam::Vec2::new(170.0, 225.0);
             let text = ggez::glam::Vec2::new(220.0, 375.0);
             let display = ggez::glam::Vec2::new(800.0, 600.0);
@@ -809,12 +755,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::Text::new("Press Space to Restart").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
-
             canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
-            
             self.frames = 200.;
-            canvas.finish(ctx)?;
-            
+            canvas.finish(ctx)?;    
         }
 
         else if self.dead==true{
@@ -835,32 +778,25 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::Text::new("Press Space to Restart").set_scale(35.),
                 graphics::DrawParam::default().dest(text),
             );
-
             canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
-            
             self.frames = 200.;
             canvas.finish(ctx)?;
-            
         }
 
         else {
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
 
-            
-            //trying to display player health
             let health_bar = ggez::glam::Vec2::new(50.0, 850.0); 
             let text = format!("Health: {}", self.player.health);
             canvas.draw(
                 graphics::Text::new(text).set_scale(35.),
                 graphics::DrawParam::default().dest(health_bar),
             );
-
-
+            
             let scale1=ggez::glam::Vec2::new (0.125,0.125);
             let scale2=ggez::glam::Vec2::new (5.0,5.0);
             let scale3=ggez::glam::Vec2::new (0.1,0.025);
-            // Draw an image.
             
              for x in 2..64 {
                   for y in 3..28 {
@@ -909,8 +845,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                             canvas.draw(&self.image1, graphics::DrawParam::new().dest(dst2).scale(scale2));     
                         }
                     } 
-            }
-             
+            } 
     }
                  
                 self.player.draw(&mut canvas, self.player.pos, &mut self.sprite);
@@ -940,10 +875,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
                         enemy.draw(&mut canvas, enemy.pos, self.player.dir, &mut self.enemy_sprite2);
                     }
                 }
-                
                 canvas.finish(ctx)?;
                 ggez::timer::yield_now();
-    
             }
             Ok(())
         }
@@ -987,7 +920,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
                         self.level5 = true;
                     }
                 }
-
                 self.move_enemy();
             }
 
@@ -1027,7 +959,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
                         self.level5 = true;
                     }
                 }
-
                 self.move_enemy();
             }
 
@@ -1066,7 +997,6 @@ impl event::EventHandler<ggez::GameError> for MainState {
                         self.level5 = true;
                     }
                 }
-
                 self.move_enemy();
             }
 
@@ -1104,16 +1034,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
                         self.level5 = true;
                     }
                 }
-
                 self.move_enemy();
             }
-
             _ => (),
-
-
-
-
-
         }
         Ok(())
     }
