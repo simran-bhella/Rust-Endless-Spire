@@ -4,7 +4,7 @@ use ggez::{event, graphics, Context, GameResult};
 use std::{env, path};
 use rand::Rng;
 
-const MAX_HEALTH: f32 = 100.0;
+const MAX_HEALTH: f32 = 3.0;
 
 struct WindowSettings {
     pub fullscreen_type: conf::FullscreenType,
@@ -260,7 +260,7 @@ struct MainState {
     level3: bool,
     level4: bool,
     level5: bool,
-    end_screen: bool,
+    dead: bool,
     stair_pos: Vec<(i32, i32)>,
 }
 
@@ -290,7 +290,7 @@ impl MainState {
             level3: false,
             level4: false,
             level5: false,
-            end_screen: false,
+            dead: false,
             player: Player::new(),
             enemies: enemies,
             window_settings: WindowSettings {
@@ -366,8 +366,19 @@ impl MainState {
         }
         return false
     }
+        
+    fn check_collision(player_pos: GridPosition, enemy_positions: &[GridPosition]) -> bool {
+       for enemy_pos in enemy_positions {
+          if player_pos == *enemy_pos {
+             return true;
+         }
+      }
+       false
+    }
     
 }
+
+      
 
 impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, ctx: &mut Context) -> GameResult {
@@ -378,11 +389,22 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 self.start_screen = false;
                 self.window_settings.toggle_fullscreen = false;
                 //ctx.gfx.set_fullscreen(self.window_settings.fullscreen_type)?;
+                if self.level5 || self.dead {
+                    self.dead = false;
+                    self.level1 = false;
+                    self.level2 = false;
+                    self.level3 = false;
+                    self.level4 = false;
+                    self.level5 = false;
+                    self.player.pos = GridPosition::new(3,13);
+                    self.player.health = MAX_HEALTH;
+                }
             }
         }
                     
         Ok(())
     }
+    
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         if self.start_screen {
@@ -410,6 +432,59 @@ impl event::EventHandler<ggez::GameError> for MainState {
             canvas.finish(ctx)?;
             
         }
+
+        else if self.level5==true{
+            let mut canvas =
+                graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
+            let dst = ggez::glam::Vec2::new(0.0, -120.0);
+
+            let tit = ggez::glam::Vec2::new(170.0, 225.0);
+            let text = ggez::glam::Vec2::new(220.0, 375.0);
+            let display = ggez::glam::Vec2::new(800.0, 600.0);
+
+            canvas.draw(&self.background_img, graphics::DrawParam::new().dest(dst));
+            canvas.draw(
+                graphics::Text::new("Win!").set_scale(75.),
+                graphics::DrawParam::default().dest(tit),
+            );
+            canvas.draw(
+                graphics::Text::new("Press Any Key to Restart").set_scale(35.),
+                graphics::DrawParam::default().dest(text),
+            );
+
+            canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
+            
+            self.frames = 200.;
+            canvas.finish(ctx)?;
+            
+        }
+
+        else if self.dead==true{
+            let mut canvas =
+                graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
+            let dst = ggez::glam::Vec2::new(0.0, -120.0);
+
+            let tit = ggez::glam::Vec2::new(170.0, 225.0);
+            let text = ggez::glam::Vec2::new(220.0, 375.0);
+            let display = ggez::glam::Vec2::new(800.0, 600.0);
+
+            canvas.draw(&self.background_img, graphics::DrawParam::new().dest(dst));
+            canvas.draw(
+                graphics::Text::new("You are DEAD!").set_scale(75.),
+                graphics::DrawParam::default().dest(tit),
+            );
+            canvas.draw(
+                graphics::Text::new("Press Any Key to Restart").set_scale(35.),
+                graphics::DrawParam::default().dest(text),
+            );
+
+            canvas.draw(&self.image3, graphics::DrawParam::new().dest(display));
+            
+            self.frames = 200.;
+            canvas.finish(ctx)?;
+            
+        }
+
         else {
             let mut canvas =
                 graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
@@ -479,6 +554,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             }
              
     }
+                 
                 self.player.draw(&mut canvas, self.player.pos);
                 for enemy in &self.enemies {
                     enemy.draw(&mut canvas, enemy.pos);
@@ -502,7 +578,14 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos;
+                      let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
+                       if MainState::check_collision(pos, &enemy_positions) {
+                        self.player.health -= 1.0;
+                       if self.player.health < 1.0 {
+                            self.dead=true;
+                        }
+                  }
+                      self.player.pos = pos;
                 } 
                 
                 if MainState::check_stairs(self,pos) {
@@ -548,7 +631,14 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos;
+                     let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
+                       if MainState::check_collision(pos, &enemy_positions) {
+                        self.player.health -= 1.0;
+                       if self.player.health < 1.0 {
+                         self.dead=true;
+                        }
+                  }
+                      self.player.pos = pos;
                 } 
 
                 let mut i = 0;
@@ -594,7 +684,14 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos;
+                      let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
+                       if MainState::check_collision(pos, &enemy_positions) {
+                        self.player.health -= 1.0;
+                       if self.player.health < 1.0 {
+                         self.dead=true;                         
+                        }
+                  }
+                      self.player.pos = pos;
                 } 
 
                 let mut i = 0;
@@ -640,7 +737,14 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     self.player.pos = pos;
+                      let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
+                       if MainState::check_collision(pos, &enemy_positions) {
+                        self.player.health -= 1.0;
+                       if self.player.health < 1.0 {
+                        self.dead=true;
+                        }
+                  }
+                      self.player.pos = pos;
                 } 
 
                 let mut i = 0;
