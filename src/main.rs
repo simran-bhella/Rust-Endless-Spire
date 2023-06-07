@@ -462,7 +462,6 @@ impl MainState {
     }
 
     fn move_enemy(&mut self) {
-
         let mut i = 0;
         if self.level1 == false {
             while i < self.enemies1.len() {
@@ -549,17 +548,63 @@ impl MainState {
 
             }
         }
-        
-    fn check_collision(player_pos: GridPosition, enemy_positions: &[GridPosition]) -> bool {
-       for enemy_pos in enemy_positions {
-          if player_pos == *enemy_pos {
-             return true;
-         }
-      }
-       false
-
     }
-    
+
+        
+    fn check_collision(&mut self) {
+
+        if self.level1 == false {
+            let enemy_positions: Vec<GridPosition> = self.enemies1.iter().map(|enemy| enemy.pos).collect();
+            for enemy_pos in enemy_positions {
+                if self.player.pos == enemy_pos {
+                    self.player.health -= 1.0;
+                }
+            }     
+            
+        }
+        else if self.level2 == false {
+            let enemy_positions: Vec<GridPosition> = self.enemies2.iter().map(|enemy| enemy.pos).collect();
+            for enemy_pos in enemy_positions {
+                if self.player.pos == enemy_pos {
+                    self.player.health -= 1.0;
+                }
+            }   
+            
+        }
+        else if self.level3 == false {
+            let enemy_positions: Vec<GridPosition> = self.enemies3.iter().map(|enemy| enemy.pos).collect();
+            for enemy_pos in enemy_positions {
+                if self.player.pos == enemy_pos {
+                    self.player.health -= 1.0;
+                }
+            }   
+            
+        }
+        else if self.level4 == false {
+            let enemy_positions: Vec<GridPosition> = self.enemies4.iter().map(|enemy| enemy.pos).collect();
+            for enemy_pos in enemy_positions {
+                if self.player.pos == enemy_pos {
+                    self.player.health -= 1.0;
+                }
+            }   
+            
+        }
+        else {
+            let enemy_positions: Vec<GridPosition> = self.enemies5.iter().map(|enemy| enemy.pos).collect();
+            for enemy_pos in enemy_positions {
+                if self.player.pos == enemy_pos {
+                    self.player.health -= 1.0;
+                }
+            }   
+            
+        }
+
+        if self.player.health < 1.0 {
+            self.dead=true;
+        }
+    }
+       
+
 }
 
       
@@ -785,14 +830,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                      let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
-                       if MainState::check_collision(pos, &enemy_positions) {
-                        self.player.health -= 1.0;
-                       if self.player.health < 1.0 {
-                            self.dead=true;
-                        }
-                  }
-                      self.player.pos = pos;
+                    self.check_collision();
+                  
+                    self.player.pos = pos;
                 } 
                 
                 if MainState::check_stairs(self,pos) {
@@ -822,14 +862,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                     let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
-                       if MainState::check_collision(pos, &enemy_positions) {
-                        self.player.health -= 1.0;
-                       if self.player.health < 1.0 {
-                         self.dead=true;
-                        }
-                  }
-                      self.player.pos = pos;
+                    self.check_collision();
+                  
+                    self.player.pos = pos;
                 } 
                 
                 if MainState::check_stairs(self,pos) {
@@ -859,14 +894,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                      let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
-                       if MainState::check_collision(pos, &enemy_positions) {
-                        self.player.health -= 1.0;
-                       if self.player.health < 1.0 {
-                         self.dead=true;                         
-                        }
-                  }
-                      self.player.pos = pos;
+                    self.check_collision();
+    
+                    self.player.pos = pos;
                 } 
 
                 if MainState::check_stairs(self,pos) {
@@ -896,13 +926,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                     self.player.pos.x = self.player.pos.x;
                 }
                 else {
-                      let enemy_positions: Vec<GridPosition> = self.enemies.iter().map(|enemy| enemy.pos).collect();
-                       if MainState::check_collision(pos, &enemy_positions) {
-                        self.player.health -= 1.0;
-                       if self.player.health < 1.0 {
-                        self.dead=true;
-                        }
-                  }
+                    self.check_collision();
                       self.player.pos = pos;
                 } 
 
