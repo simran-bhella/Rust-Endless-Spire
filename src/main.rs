@@ -104,29 +104,12 @@ impl Levels {
     }
 }
 
-impl From<GridPosition> for graphics::Rect {
-    fn from(pos: GridPosition) -> Self {
-        graphics::Rect::new_i32(
-            pos.x as i32 * 20 as i32,
-            pos.y as i32 * 20 as i32,
-            20 as i32,
-            20 as i32,
-        )
-    }
-}
 
 impl GridPosition {
     pub fn new(x: i16, y: i16) -> Self {
         GridPosition {x, y}
     }
 }
-
-impl From<(i16, i16)> for GridPosition {
-    fn from(pos: (i16, i16)) -> Self {
-        GridPosition { x: pos.0, y: pos.1 }
-    }
-}
-
 struct Player {
     health: f32,
     //player_img: graphics::Image,
@@ -153,13 +136,7 @@ impl Player {
 
     fn draw(&self, canvas: &mut graphics::Canvas, pos: GridPosition, pic: &mut graphics::Image) {
         let dst2 =ggez::glam::Vec2::new(pos.x as f32 *25.0-27.5, pos.y as f32 *25.0+93.0);
-        /*canvas.draw(
-            &graphics::Quad,
-            graphics::DrawParam::new()
-                .dest_rect(self.pos.into())
-                .dest(dst2)
-                .color([1.0, 0.5, 0.0, 1.0]),
-        );*/
+        
         //down is 0, down walking is 1, down walking is 2
         //up is 3, up walking is 4, up walking is 5,
         //left is 6, left walking 7, left walking 8
@@ -239,11 +216,7 @@ impl Player {
                 .dest(dst2)
                 .src(source_rect)); 
             }
-
-
-
             _ => {
-
             }
         }
     } 
@@ -354,12 +327,12 @@ impl Enemy {
         match dir {
 
             1 => {
-                return GridPosition::new(self.pos.x, (self.pos.y - 1));
+                return GridPosition::new(self.pos.x, self.pos.y - 1);
 
             }
 
             2 => {
-                return GridPosition::new(self.pos.x, (self.pos.y + 1))
+                return GridPosition::new(self.pos.x, self.pos.y + 1)
             }
 
             3 => {
@@ -404,7 +377,7 @@ struct MainState {
     enemy_sprite: graphics::Image,
     stair: graphics::Image,
     player: Player,
-    enemies: Vec<(Enemy)>,
+    enemies: Vec<Enemy>,
     levels: Levels,
     start_screen: bool,
     level1: bool,
@@ -464,7 +437,6 @@ impl MainState {
         if self.levels.map4.contains(&(a.into(), b.into())) {
                     return false
         }
-    //    println!("Pos: {},{}", a, b);
         return true
       } 
     
