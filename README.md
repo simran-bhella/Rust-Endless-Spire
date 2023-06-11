@@ -19,14 +19,14 @@ to make it to the top. To get to the next level the player must make it to the s
 into contact with an enemy, they will lose one health. 
 
 ## Current delieverables
-1.A complete Roguelike game developed using Rust programming language.
+1. A complete Roguelike game developed using Rust programming language.
 	MVP:
-	- a) Player Movement
-    - b) Enemies (Randomized Movement
-	- c) 5-level map
-	- d) Win Condition (Reaching the top)
-	- e) Lose Condition (Health <=0 || Time expires [steps || real time]
-	- f) Stairs Movement
+    a) Player Movement
+    b) Enemies (Randomized Movement
+	c) 5-level map
+	d) Win Condition (Reaching the top)
+	e) Lose Condition (Health <=0 || Time expires [steps || real time]
+	f) Stairs Movement
 
 	Stretch Goals:
     * Items (ie: bombs)
