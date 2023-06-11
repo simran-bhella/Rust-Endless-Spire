@@ -14,17 +14,19 @@
 
 ## Brief Introduction
 
-"Endless Spire", our game will involve navigating a maze, killing monsters, and climbing towers while being patrolled by monsters. The player will input commands to move around the maze, attack monsters, and use items. There will be various items available for the player to collect, each with different effects on gameplay, such as increasing or decreasing the player's health, or granting special abilities.
+"Endless Spire", our game will involve navigating a maze, avoiding enemies, and climbing towers while being patrolled by enemies. The player will input commands in order to control their avatar sprite. Navigating through each map, the player will have only three healths
+to make it to the top. To get to the next level the player must make it to the staircase at the other side of the map. If the player comes
+into contact with an enemy, they will lose one health. 
 
 ## Current delieverables
 1.A complete Roguelike game developed using Rust programming language.
 	MVP:
-	a) Player Movement
-    b) Enemies (Randomized Movement
-	c) 5-level map
-	d) Win Condition (Reaching the top)
-	e) Lose Condition (Health <=0 || Time expires [steps || real time]
-	f) Stairs Movement
+	- a) Player Movement
+    - b) Enemies (Randomized Movement
+	- c) 5-level map
+	- d) Win Condition (Reaching the top)
+	- e) Lose Condition (Health <=0 || Time expires [steps || real time]
+	- f) Stairs Movement
 
 	Stretch Goals:
     * Items (ie: bombs)
