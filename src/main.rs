@@ -718,7 +718,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         if self.start_screen {
             let mut canvas =
-                graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
+                graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.0]));
             let dst = ggez::glam::Vec2::new(0.0, -120.0);
             let tit = ggez::glam::Vec2::new(170.0, 225.0);
             let text = ggez::glam::Vec2::new(220.0, 375.0);
@@ -785,7 +785,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
         else {
             let mut canvas =
-                graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
+                graphics::Canvas::from_frame(ctx, graphics::Color::from([0.0, 0.0, 0.0, 0.9]));
 
             let health_bar = ggez::glam::Vec2::new(50.0, 850.0); 
             let text = format!("Health: {}", self.player.health);
@@ -793,7 +793,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                 graphics::Text::new(text).set_scale(35.),
                 graphics::DrawParam::default().dest(health_bar),
             );
-            
+
             let scale1=ggez::glam::Vec2::new (0.125,0.125);
             let scale2=ggez::glam::Vec2::new (5.0,5.0);
             let scale3=ggez::glam::Vec2::new (0.1,0.025);
