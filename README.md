@@ -20,13 +20,13 @@ into contact with an enemy, they will lose one health.
 
 ## Current delieverables
 1. A complete Roguelike game developed using Rust programming language.
-	- MVP:
-    a) Player Movement
-    b) Enemies (Randomized Movement
-	c) 5-level map
-	d) Win Condition (Reaching the top)
-	e) Lose Condition (Health <=0 || Time expires [steps || real time]
-	f) Stairs Movement
+	MVP:
+    - Player Movement
+    - Enemies (Randomized Movement)
+	- 5-level map
+	- Win Condition (Reaching the top)
+    - Lose Condition (Health <=0 || Time expires [steps || real time])
+	- Stairs Movement
 
 	Stretch Goals:
     * Items (ie: bombs)
