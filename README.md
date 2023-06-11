@@ -20,7 +20,8 @@ into contact with an enemy, they will lose one health.
 
 ## Current delieverables
 1. A complete Roguelike game developed using Rust programming language.
-	MVP:
+	
+    MVP:
     - Player Movement
     - Enemies (Randomized Movement)
 	- 5-level map
