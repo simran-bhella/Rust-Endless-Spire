@@ -18,7 +18,7 @@
 to make it to the top. To get to the next level the player must make it to the staircase at the other side of the map. If the player comes
 into contact with an enemy, they will lose one health. 
 
-## Current delieverables
+## Current deliverables
 1. A complete Roguelike game developed using Rust programming language.
 	
     MVP:
