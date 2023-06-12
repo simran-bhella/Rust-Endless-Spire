@@ -22,12 +22,12 @@ into contact with an enemy, they will lose one health.
 1. A complete Roguelike game developed using Rust programming language.
 	
     MVP:
-    - Player Movement
+    - Player Movement + Sprites w/ directional movement
     - Enemies (Randomized Movement)
 	- 5-level map
 	- Win Condition (Reaching the top)
     - Lose Condition (Health <=0 || Time expires [steps || real time])
-	- Stairs Movement
+	- Stairs functionality
 
 	Stretch Goals:
     * Items (ie: bombs)
