@@ -59,7 +59,7 @@ into contact with an enemy, they will lose one health.
     uncertain if we would reach the MVP. 
 
 ## Gameplay Screenshots
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+![Alt text](~/resources/sss.png "Starting Screen")
 
 ## Installation/Running
 Installing is easy! Just download the source code from https://gitlab.cecs.pdx.edu/lishih/23spring-410p-endless-spire and unzip. Then open in a terminal or vscode and type cargo run.
