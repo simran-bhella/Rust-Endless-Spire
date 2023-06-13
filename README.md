@@ -69,7 +69,8 @@ into contact with an enemy, they will lose one health.
 Installing is easy! Just download the source code from https://gitlab.cecs.pdx.edu/lishih/23spring-410p-endless-spire and unzip. Then open in a terminal or vscode and type cargo run.
 
 ## Support
-If you run into any problems feel free to contact any of the creators:
+
+- If you run into any problems feel free to contact any of the creators:
     * Bruce Truong, brucet@pdx.edu
     * Chentao Ma, chentao@pdx.edu
     * John Asencio-Giron, jaa23@pdx.edu
