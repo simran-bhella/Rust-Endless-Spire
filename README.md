@@ -40,6 +40,12 @@ into contact with an enemy, they will lose one health.
     * Localization
 
 
+## Resources
+
+Sprite sourced from Anifarea on opengameart.com - https://opengameart.org/content/antifareas-rpg-sprite-set-1-enlarged-w-transparent-background-fixed
+
+Examples and block and tile taken from Ggez github - https://github.com/ggez/ggez/tree/master
+
 
 ## Getting started
 
