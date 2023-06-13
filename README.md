@@ -70,11 +70,11 @@ Installing is easy! Just download the source code from https://gitlab.cecs.pdx.e
 
 ## Support
 If you run into any problems feel free to contact any of the creators:
-    -Bruce Truong, brucet@pdx.edu
-    -Chentao Ma, chentao@pdx.edu
-    -John Asencio-Giron, jaa23@pdx.edu
-    -Shihao Li, lishih@pdx.edu
-    -Simranjit Bhella, sbhella@pdx.edu
+    * Bruce Truong, brucet@pdx.edu
+    * Chentao Ma, chentao@pdx.edu
+    * John Asencio-Giron, jaa23@pdx.edu
+    * Shihao Li, lishih@pdx.edu
+    * Simranjit Bhella, sbhella@pdx.edu
 
 ## Roadmap
 This is version V1, in the future there might be versions that implement more features to the game.
