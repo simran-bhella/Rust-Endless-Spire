@@ -43,17 +43,17 @@ into contact with an enemy, they will lose one health.
 ## Problems we ran into
 
 1. GitLab
-    At first, we struggled to set up how to work on GitLab, getting our keys set up then 
+    - At first, we struggled to set up how to work on GitLab, getting our keys set up then 
     also figuring out how to push and merge without messing up others progress.
 2. Ggez
-    We ran into a problem where no matter what we did we could not display an image. Every 
+    - We ran into a problem where no matter what we did we could not display an image. Every 
     place we looked did not help. Finally with the help of our beloved TA Nicholas we found 
     that the problem was actually the version of Ggez we were using. Our code was actually right,
     but the version of Ggez we were using had a bug. We then had to switch the version of Ggez we 
     were using and thankfully we were still in the beginning of development so it did not interfere
     with some of the other progress we made. 
 3. Timeline
-    Balancing life, and other class work ontop of a project like this was very difficult. About 
+    - Balancing life, and other class work ontop of a project like this was very difficult. About 
     half of our deadlines we had to push back because various people were busy with other classes 
     and/or life. This made the project a little bit more stressful because of the fact we were 
     uncertain if we would reach the MVP. 
