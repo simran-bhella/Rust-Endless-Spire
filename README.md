@@ -59,7 +59,11 @@ into contact with an enemy, they will lose one health.
     uncertain if we would reach the MVP. 
 
 ## Gameplay Screenshots
+# Starting Screen
 ![Alt text](/resources/sss.png "Starting Screen")
+
+# Second Level
+![Alt text](/resources/map2.png "Map 2")
 
 ## Installation/Running
 Installing is easy! Just download the source code from https://gitlab.cecs.pdx.edu/lishih/23spring-410p-endless-spire and unzip. Then open in a terminal or vscode and type cargo run.
