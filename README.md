@@ -13,7 +13,6 @@
     Simranjit Bhella, sbhella@pdx.edu
 
 ## Brief Introduction
-
 "Endless Spire", our game will involve navigating a maze, avoiding enemies, and climbing towers while being patrolled by enemies. The player will input commands in order to control their avatar sprite. Navigating through each map, the player will have only three healths
 to make it to the top. To get to the next level the player must make it to the staircase at the other side of the map. If the player comes
 into contact with an enemy, they will lose one health. 
@@ -41,7 +40,6 @@ into contact with an enemy, they will lose one health.
 
 
 ## Problems we ran into
-
 1. GitLab
     - At first, we struggled to set up how to work on GitLab, getting our keys set up then 
     also figuring out how to push and merge without messing up others progress.
@@ -60,13 +58,17 @@ into contact with an enemy, they will lose one health.
 
 ## Gameplay Screenshots
 # Starting Screen
-![Alt text](/resources/sss.png "Starting Screen")
+![Alt text](/resources/ss.png "Starting Screen")
 
 # Second Level
 ![Alt text](/resources/map2.png "Map 2")
 
 ## Installation/Running
-Installing is easy! Just download the source code from https://gitlab.cecs.pdx.edu/lishih/23spring-410p-endless-spire and unzip. Then open in a terminal or vscode and type cargo run.
+Installing is easy! First make sure you have Rust installed on your system, then just download the source code from https://gitlab.cecs.pdx.edu/lishih/23spring-410p-endless-spire and unzip. Start the game with
+'''
+cargo run
+'''
+
 
 ## Support
 
@@ -81,33 +83,18 @@ Installing is easy! Just download the source code from https://gitlab.cecs.pdx.e
 This is version V1, in the future there might be versions that implement more features to the game.
 
 ## Resources
+Background sourced from Ansimuz on opengameart.com - https://opengameart.org/content/phantasy-dungeon-entrance
 
 Sprite sourced from Anifarea on opengameart.com - https://opengameart.org/content/antifareas-rpg-sprite-set-1-enlarged-w-transparent-background-fixed
 
-Examples and block and tile taken from Ggez github - https://github.com/ggez/ggez/tree/master
+Examples and block and tile sources from Ggez github - https://github.com/ggez/ggez/tree/master
 
 ## License
-Sprites - CC0 1.0 Universal (CC0 1.0)
+Background & Sprites - CC0 1.0 Universal (CC0 1.0)
 Public Domain Dedication
 
 Ggez Examples - The MIT License (MIT)
 
 Copyright (c) 2016-2017 ggez-dev
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+This work is licensed under the "MIT License". Please see the file LICENSE.txt in this distribution for license terms.
