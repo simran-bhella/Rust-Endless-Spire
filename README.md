@@ -66,8 +66,25 @@ into contact with an enemy, they will lose one health.
 ## Installation/Running
 Installing is easy! First make sure you have Rust installed on your system, then just download the source code from https://gitlab.cecs.pdx.edu/lishih/23spring-410p-endless-spire and unzip. Start the game with
 '''
-cargo run
-'''
+`cargo run`
+
+'''`
+
+## Testing part:
+Since we are using Ggez framework to build our game, we haven't found any specific functions or relavant crates about testing code.
+However, we found those two ways are we prefer the most.
+
+*Unit Testing*: Writing test cases to verify that a single feature, class, or module in a game is working as expected. Tests can be run using a testing framework in Rust, such as the 
+cargo test command. Make sure the test covers key features in the game, including map generation, movement logic, enemy AI, and more.
+Like what we did in previous assignments, we can run cargo test, but unluckily, we found it's hard to implement the test in this way. Due to the time limit, it seems tough to deal with the syntax issues. Besides, we don't see the meaning of unit testing in our game since during the developing process, we always keep modifying and testing code by running our 
+game and check the difference from modification. However, we still include a unit test template in the src/test.rs just in case. 
+
+**Visual Testing**: Visual effects are usually an important part of Roguelikes. We need to make sure the game's graphics and interface elements work properly at various resolutions and display Settings. We can run the game manually and check that the game interface, map generation, image rendering, etc., are correct. (It is also possible to use automated tools such as SikuliX or Selenium to take screenshots of the game interface and compare them.)
+In our `src/test.rs`, we mocked a completely new game and change the corresponding code to test the different results. Such as testing the enemies movements by checking if the enemies 
+freeze in the test. What's more, in our test, it includes the tests on such as map bounds, tile's images, health, collision, stairs and startscreen. 
+We developers can test the corresponding functions by playing the game and manipulating the character in different areas.
+To run our test, instead, run the command : ` cargo run --bin test`. We think this is the best and the most effiecient way to test functionality.
+ 
 
 
 ## Support
