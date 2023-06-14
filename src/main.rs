@@ -342,7 +342,7 @@ impl MainState {
 impl event::EventHandler<ggez::GameError> for MainState {
     /// The update function will occur on every frame before it's drawn.
     /// This uses ggez's built in timer to decide when to update.
-    /// This function is where the values are reset if the player is dead.
+    /// This function is where the values are reset if the player is dead or wins.
     fn update(&mut self, ctx: &mut Context) -> GameResult {
         let start_press = &ctx.keyboard;
         const DESIRED_FPS: u32 = 60;
