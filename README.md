@@ -1,4 +1,4 @@
-# 23Spring-410P-Endless Spire
+# Endless Spire: A Roguelike game in Rust
 
 ## Team members
 
